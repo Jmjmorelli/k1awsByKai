@@ -6,7 +6,7 @@
 }
 
 :root {
-  --background: #ffffff;
+  --background: #f9d9e0;
   --foreground: #171717;
   font-family: blostaFont;
 }
@@ -20,7 +20,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #ededed;
+    --background: #f9d9e0;
     --foreground: #0a0a0a;
   }
 }
