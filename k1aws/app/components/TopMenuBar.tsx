@@ -5,7 +5,7 @@ export default function TopMenuBar() {
     return (
         <div style={{ display: "flex", margin: ".5rem", marginRight: "1rem" }}>
 
-            <div style={{display: "absolute", right: "0"}}>
+            {/* <div style={{ display: "absolute", right: "0" }}>
                 <div data-quantity="0" className="btn-cart">
                     <svg className="icon-cart" viewBox="0 0 24.38 30.52" height="30.52" width="24.38"
                         xmlns="http://www.w3.org/2000/svg">
@@ -16,13 +16,13 @@ export default function TopMenuBar() {
                     </svg>
                     <span className="quantity"></span>
                 </div>
-            </div>
+            </div> */}
 
-            <div>
+            <div style={{position: "absolute", right: 0, paddingRight: "1.5rem"}}>
                 <div className="hamburgers">
                     <label className="hamburger">
                         <input type="checkbox" />
-                        <span className="bar"></span>
+                        <span className="bar">  </span>
                         <span className="bar"></span>
                         <span className="bar"></span>
                     </label>
