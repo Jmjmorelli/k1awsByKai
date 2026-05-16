@@ -166,7 +166,7 @@ span {
   -webkit-text-fill-color: transparent;
 }
 
-  /* for the buttons on the home page .. nvm i dont think this will work */ 
+  /* for the buttons on the home page */
 .subKailenColors {
   background: linear-gradient(to top, #830e50, #f9d9e0);
   -webkit-background-clip: text;
