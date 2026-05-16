@@ -274,8 +274,12 @@ span {
   padding: 30px;
   box-sizing: border-box;
   display: flex;
+
+
   flex-direction: column;
-  gap: 5rem;
+  gap: 3rem;
+  justify-content : center;
+  padding-bottom: 10rem;
 }
 
 
@@ -284,8 +288,13 @@ span {
   right: 0;
   width: 100%;
   display: flex;
+
+
+
   flex-direction: column;
-  gap: 5rem;
+  gap: 3rem;  
+  justify-content : center;
+  padding-bottom: 10rem;
 }
 
 
