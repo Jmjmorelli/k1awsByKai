@@ -171,6 +171,18 @@ span {
   -webkit-text-fill-color: transparent;
 }
 
+.kailenColorsReverse {
+  display: flex;
+  justify-content: center;
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 3rem;
+  background: linear-gradient(to bottom, #830e50, #f9d9e0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 /* for the buttons on the home page */
 .subKailenColors {
   background: linear-gradient(to top, #830e50, #f9d9e0);
@@ -279,7 +291,7 @@ span {
   flex-direction: column;
   gap: 3rem;
   justify-content : center;
-  padding-bottom: 10rem;
+  /* padding-bottom: 10rem; */
 }
 
 
@@ -290,11 +302,10 @@ span {
   display: flex;
 
 
-
   flex-direction: column;
   gap: 3rem;  
   justify-content : center;
-  padding-bottom: 10rem;
+  /* padding-bottom: 10rem; */
 }
 
 

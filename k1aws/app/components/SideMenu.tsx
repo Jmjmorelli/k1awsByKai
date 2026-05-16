@@ -28,6 +28,8 @@ export default function SideMenu() {
                 <a style={{ fontWeight: "bold" }} href="#">Contact</a>
                 <a style={{ fontWeight: "bold" }} href="#">Dashboard</a>
 
+                <div className="kailenColorsReverse">K1aws By Kai</div>
+                
             </div>
 
 
