@@ -18,16 +18,7 @@ export default function TopMenuBar() {
                 </div>
             </div> */}
 
-            <div style={{position: "absolute", right: 0, paddingRight: "1.5rem"}}>
-                <div className="hamburgers">
-                    <label className="hamburger">
-                        <input type="checkbox" />
-                        <span className="bar">  </span>
-                        <span className="bar"></span>
-                        <span className="bar"></span>
-                    </label>
-                </div>
-            </div>
+           
 
         </div>
     );

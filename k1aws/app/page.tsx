@@ -10,7 +10,9 @@ export default function Home() {
     <div style={{}}>
 
       <TopMenuBar />
-      <SideMenu/>
+      <header>
+        <SideMenu />
+      </header>
       <div className="kailenColors">
         K1aws By Kai
       </div>
@@ -18,12 +20,12 @@ export default function Home() {
 
       </div>
       <div style={{ display: "flex", flexDirection: "column", marginTop: "8rem", fontSize: "25px", textAlign: "center" }}>
-        <div style={{ fontWeight: "bold", height: "15rem", alignSelf: "flex-start", marginLeft: "10vh" }}>Me</div>
-        <div style={{ fontWeight: "bold", height: "15rem", alignSelf: "flex-end", marginRight: "10vh" }}>Policies</div>
-        <div style={{ fontWeight: "bold", height: "15rem", alignSelf: "flex-start", marginLeft: "10vh" }}>Pricing</div>
+        <div className="subKailenColors" style={{ fontWeight: "bold", height: "15rem", alignSelf: "flex-start", marginLeft: "10vh" }}>Me</div>
+        <div className="subKailenColors" style={{ fontWeight: "bold", height: "15rem", alignSelf: "flex-end", marginRight: "10vh" }}>Policies</div>
+        <div className="subKailenColors" style={{ fontWeight: "bold", height: "15rem", alignSelf: "flex-start", marginLeft: "10vh" }}>Pricing</div>
       </div>
 
-      <div style={{ marginTop: "100rem" }}>testing</div>
+      <div style={{ marginTop: "50rem" }}>testing</div>
     </div>
   );
 }
