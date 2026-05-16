@@ -10,6 +10,11 @@
   src: url("./fonts/PlayfairDisplay-VariableFont_wght.ttf");
 }
 
+@font-face {
+  font-family: garamondFont;
+  src: url("./fonts/CormorantGaramond-VariableFont_wght.ttf");
+}
+
 :root {
   --background: linear-gradient(to bottom, #830e50, #a3496f, #c27992, #dea8b7, #f9d9e0);
   --foreground: #171717;
@@ -299,4 +304,60 @@ span {
   font-size: 30px;
   cursor: pointer;
   margin-bottom: 30px;
+}
+
+
+/* CSS */
+.button-23 {
+
+  background-color: transparent;
+  border: 1px solid #830e50;
+
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: #830e50;
+  
+  cursor: pointer;
+  display: inline-block;
+  font-family: blostaFont;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+  margin: 0;
+  outline: none;
+  padding: 13px 23px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  touch-action: manipulation;
+  transition: box-shadow .2s,-ms-transform .1s,-webkit-transform .1s,transform .1s;
+  user-select: none;
+  -webkit-user-select: none;
+  width: auto;
+
+}
+
+.button-23:focus-visible {
+  box-shadow: #222222 0 0 0 2px, rgba(255, 255, 255, 0.8) 0 0 0 4px;
+  transition: box-shadow .2s;
+}
+
+.button-23:active {
+  background-color: #830e50;
+  border-color: #f9d9e0;
+  color: #f9d9e0;
+  transform: scale(.96);
+}
+
+.button-23:disabled {
+  border-color: #DDDDDD;
+  color: #DDDDDD;
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.description {
+  display: flex;  
+  justify-content: center;
+  font-family: garamondFont !important;
 }
