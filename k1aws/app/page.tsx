@@ -4,6 +4,8 @@ import SideMenu from "./components/SideMenu";
 
 import leftNail from "../public/leftNails.png";
 import rightNail from "../public/rightNails.png";
+import kai from "../public/output-onlinepngtools.png";
+import { relative } from "path";
 
 export default function Home() {
   return (
@@ -17,14 +19,25 @@ export default function Home() {
         K1aws By Kai
       </div>
       <div>
-    <div className="description" style={{color: "#f9d9e0"}}>
-      GEL X | HARD GEL | GEL POLISH | SOFT GEL  
-    </div>
-    <div className="description" style={{color: "#f9d9e0"}}>
-      {/* Don't understand these? FAQ */}
-    </div>
+        <div className="description" style={{ color: "#f9d9e0" }}>
+          GEL X | HARD GEL | GEL POLISH | SOFT GEL
+        </div>
+        <div style={{ justifyContent: "center", display: "flex", color: "#f9d9e0", gap: "5rem", paddingTop: "1.5rem" }}>
+          <div style={{ position: "relative", width: "100vw", marginTop: "-150px" }}>
+            <Image style={{}} src={kai} width={250} loading="eager"
+              height={100} alt="Face" />
+          </div>
+        </div>
+        <div>
+          <div className="description" style={{ width: "30vw" }}>
+            Quick Description here, of how I will make your nails look super super pretty!
+          </div>
+        </div>
+        <div style={{ display: "flex", justifyContent: "center", color: "#f9d9e0", fontSize: "30px" }}>
+          Policies
+        </div>
 
-    {/* <div className="description" style={{alignSelf: "flex-end"}}>
+        {/* <div className="description" style={{alignSelf: "flex-end"}}>
 wewe
     </div> */}
       </div>
