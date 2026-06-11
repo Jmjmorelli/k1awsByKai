@@ -16,7 +16,10 @@
 }
 
 :root {
-  --background: linear-gradient(to bottom, #830e50, #a3496f, #c27992, #dea8b7, #f9d9e0);
+  /* --background: linear-gradient(to bottom, #6e0540 5%,  #830e50 29% , #a3496f, #c27992, #dea8b7, #f9d9e0); */
+  /* --background: #a3496f; */
+  --background: #a3496f;
+
   --foreground: #171717;
   font-family: blostaFont;
 }
@@ -28,21 +31,26 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: linear-gradient(to bottom, #830e50, #a3496f, #c27992, #dea8b7, #f9d9e0);
-    /* --background: #f9d9e0; */
+  --background: linear-gradient(to bottom, #6e0540 5%,  #830e50 29% , #a3496f, #c27992, #dea8b7, #f9d9e0);
+  --background: linear-gradient(to bottom, #6e0540 5%,  #830e50 29% , #a3496f, #c27992, #dea8b7, #f9d9e0);
+  --background: #a3496f;
+  
+  
+    --background: #f9d9e0;
     --foreground: #0a0a0a;
   }
-}
+} */
 
 html {
-  background-color: #830e50;
+  /* background-color: #830e50; */
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  /* background: var(--background); */
+  /* color: var(--foreground); */
   font-family: blostaFont;
 }
 
@@ -159,6 +167,15 @@ span {
   background-color: #830e50;
 }
 
+.gradientColors {
+  background: linear-gradient(to top, #830e50, #f9d9e0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+}
+
+
 .kailenColors {
   display: flex;
   justify-content: center;
@@ -259,20 +276,7 @@ span {
   padding: 20px;
 }
 
-/* Dark Background */
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  pointer-events: none;
-  transition: 0.3s;
-}
 
-.overlay.active {
-  opacity: 1;
-  pointer-events: all;
-}
 
 /* Slide Menu */
 .menu {
@@ -290,7 +294,7 @@ span {
 
   flex-direction: column;
   gap: 3rem;
-  justify-content : center;
+  justify-content: center;
   /* padding-bottom: 10rem; */
 }
 
@@ -303,8 +307,8 @@ span {
 
 
   flex-direction: column;
-  gap: 3rem;  
-  justify-content : center;
+  gap: 3rem;
+  justify-content: center;
   /* padding-bottom: 10rem; */
 }
 
@@ -336,7 +340,7 @@ span {
   border-radius: 8px;
   box-sizing: border-box;
   color: #830e50;
-  
+
   cursor: pointer;
   display: inline-block;
   font-family: blostaFont;
@@ -350,10 +354,11 @@ span {
   text-align: center;
   text-decoration: none;
   touch-action: manipulation;
-  transition: box-shadow .2s,-ms-transform .1s,-webkit-transform .1s,transform .1s;
+  transition: box-shadow .2s, -ms-transform .1s, -webkit-transform .1s, transform .1s;
   user-select: none;
   -webkit-user-select: none;
   width: auto;
+  justify-content: center;
 
 }
 
@@ -377,7 +382,8 @@ span {
 }
 
 .description {
-  display: flex;  
+  display: flex;
   justify-content: center;
   font-family: garamondFont !important;
+
 }
