@@ -15,14 +15,13 @@
   src: url("./fonts/CormorantGaramond-VariableFont_wght.ttf");
 }
 
-:root {
-  /* --background: linear-gradient(to bottom, #6e0540 5%,  #830e50 29% , #a3496f, #c27992, #dea8b7, #f9d9e0); */
-  /* --background: #a3496f; */
+/* :root {
+  --background: linear-gradient(to bottom, #6e0540 5%,  #830e50 29% , #a3496f, #c27992, #dea8b7, #f9d9e0);
   --background: #a3496f;
 
   --foreground: #171717;
   font-family: blostaFont;
-}
+} */
 
 @theme inline {
   --color-background: var(--background);
@@ -30,13 +29,11 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
-
-/* @media (prefers-color-scheme: dark) {
+/* 
+@media (prefers-color-scheme: dark) {
   :root {
+    
     --background: linear-gradient(to bottom, #830e50, #a3496f, #c27992, #dea8b7, #f9d9e0);
-  --background: linear-gradient(to bottom, #6e0540 5%,  #830e50 29% , #a3496f, #c27992, #dea8b7, #f9d9e0);
-  --background: linear-gradient(to bottom, #6e0540 5%,  #830e50 29% , #a3496f, #c27992, #dea8b7, #f9d9e0);
-  --background: #a3496f;
   
   
     --background: #f9d9e0;
@@ -46,9 +43,13 @@
 
 html {
   /* background-color: #830e50; */
+  /* background-color: linear-gradient(to bottom, #830e50, #f9d9e0); */
+
 }
 
 body {
+  /* background-color: linear-gradient(to bottom, #830e50, #f9d9e0); */
+
   /* background: var(--background); */
   /* color: var(--foreground); */
   font-family: blostaFont;
