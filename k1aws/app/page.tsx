@@ -75,7 +75,7 @@ wewe
       </div>
     
 
-      <div style={{ display: "flex", fontSize: "25px", textAlign: "center", marginTop: "1rem", justifyContent: "center" }}>
+      <div style={{ display: "flex", fontSize: "25px", textAlign: "center", marginTop: "1rem", justifyContent: "center", marginBottom: "5rem" }}>
         <div className="button-23">book</div>
 
       </div>
