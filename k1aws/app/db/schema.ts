@@ -25,7 +25,17 @@ export const appointmentsTable = sqliteTable('appointments', {
     appointmentNotes: text('appointmentNotes'),
 });
 
-export type InsertAppointment = typeof usersTable.$inferInsert;
+export type InsertAppointment = typeof appointmentsTable.$inferInsert;
 export type SelectAppointment = typeof appointmentsTable.$inferSelect;
 
+export const passwordTable = sqliteTable('passwords', {
+    id: text('id').primaryKey(),
+    userId: text('userId').notNull(),
+    hashedPassword: text('hashedPassword').notNull(),
+    description: text('description').notNull(),
+
+});
+
+export type InsertPassword = typeof passwordTable.$inferInsert;
+export type SelectPassword = typeof passwordTable.$inferSelect;
 
