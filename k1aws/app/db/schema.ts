@@ -26,4 +26,6 @@ export const appointmentsTable = sqliteTable('appointments', {
 });
 
 export type InsertAppointment = typeof usersTable.$inferInsert;
-export type SelectAppointment = typeof usersTable.$inferSelect;
+export type SelectAppointment = typeof appointmentsTable.$inferSelect;
+
+
