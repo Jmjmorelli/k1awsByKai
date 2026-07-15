@@ -8,6 +8,8 @@ import rightNail from "../public/rightNails.png";
 import kai from "../public/k1awsProfileFinal.png";
 import {relative} from "path";
 import {useState} from "react";
+import Link from 'next/link';
+
 
 export default function Home() {
 
@@ -145,7 +147,7 @@ export default function Home() {
             </div>
 
             <div style={{display: "flex", justifyContent: "center", marginTop: "1rem"}}>
-                <div className="button-23">book</div>
+                <Link href={"/booking"} className="button-23">book</Link>
             </div>
         </div>
     );

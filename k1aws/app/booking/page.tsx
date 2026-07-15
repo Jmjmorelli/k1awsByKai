@@ -1,35 +1,53 @@
 "use client";
+import {Calendar} from "@/components/ui/calendar"
+import React from "react";
+import {useState} from "react";
+
 
 export default function Gallery() {
+const [date, setDate] = useState<Date | undefined>(new Date())
+
+
+    const [gelX, setGelX] = React.useState<number>(0)
+
 
     return (
         <div>
             <span>
+
+
+                 {/*<Calendar*/}
+                 {/*    mode="single"*/}
+                 {/*    selected={date}*/}
+                 {/*    onSelect={setDate}*/}
+                 {/*    className="rounded-lg border"*/}
+                 {/*/>*/}
+
                 <div style={{ display: "flex", justifyContent: "center", marginTop: "4rem" }} className="breadcrumbs text-sm">
                     <ul>
-                        <li><a>Home</a></li>
-                        <li><a>Documents</a></li>
-                        <li>Add Document</li>
+                        <li><a>GEL X</a></li>
+                        <li><a>FILL</a></li>
+                        {/*<li>Add Document</li>*/}
                     </ul>
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", gap: "2rem", marginTop: "-6rem" }}>
 
                     <div className="card w-96 bg-base-100 shadow-sm">
                         <div className="card-body">
-                            <span className="badge badge-xs badge-warning">Most Popular</span>
+                            {/*<span className="badge badge-xs badge-warning">Most Popular</span>*/}
                             <div className="flex justify-between">
                                 <h2 className="text-3xl font-bold">GEL-X</h2>
                                 <span className="text-xl">$40</span>
                             </div>
                             <ul className="mt-6 flex flex-col gap-2 text-xs">
                                 <li>
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
-                                    <span>GEL-X</span>
+                                    {/*<svg xmlns="http://www.w3.org/2000/svg" className="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>*/}
+                                    {/*<span>GEL-X</span>*/}
                                 </li>
 
                             </ul>
                             <div className="mt-6">
-                                <button className="btn btn-primary btn-block">Subscribe</button>
+                                <button className="btn btn-primary btn-block">Select</button>
                             </div>
                         </div>
                     </div>
@@ -37,25 +55,25 @@ export default function Gallery() {
                         <div className="card-body">
                             {/* <span className="badge badge-xs badge-warning">Most Popular</span> */}
                             <div className="flex justify-between">
-                                <h2 className="text-3xl font-bold">Natural Builder Gel Overlay </h2>
+                                <h2 className="text-3xl font-bold">Gel Overlay </h2>
                                 <span className="text-xl">$40</span>
                             </div>
                             <ul className="mt-6 flex flex-col gap-2 text-xs">
                                 <li>
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
-                                    <span>High-resolution image generation</span>
-                                </li>
-                                <li>
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
-                                    <span>Customizable style templates</span>
-                                </li>
-                                <li>
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
-                                    <span>Batch processing capabilities</span>
-                                </li>
-                                <li>
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
-                                    <span>AI-driven image enhancements</span>
+                                    {/*<svg xmlns="http://www.w3.org/2000/svg" className="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>*/}
+                                    <span>Natural Nails</span>
+                                {/*</li>*/}
+                                {/*<li>*/}
+                                {/*    <svg xmlns="http://www.w3.org/2000/svg" className="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>*/}
+                                {/*    <span>Customizable style templates</span>*/}
+                                {/*</li>*/}
+                                {/*<li>*/}
+                                {/*    <svg xmlns="http://www.w3.org/2000/svg" className="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>*/}
+                                {/*    <span>Batch processing capabilities</span>*/}
+                                {/*</li>*/}
+                                {/*<li>*/}
+                                {/*    <svg xmlns="http://www.w3.org/2000/svg" className="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>*/}
+                                {/*    <span>AI-driven image enhancements</span>*/}
                                 </li>
 
                                 {/* <li className="opacity-50">
@@ -64,7 +82,7 @@ export default function Gallery() {
                                 </li> */}
                             </ul>
                             <div className="mt-6">
-                                <button className="btn btn-primary btn-block">Subscribe</button>
+                                <button className="btn btn-primary btn-block">Select</button>
                             </div>
                         </div>
                     </div>
