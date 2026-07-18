@@ -62,7 +62,7 @@ export default function Booking() {
         <div>
             <span>
                 
-                <div style={{display: "flex", justifyContent: "center", marginTop: "4rem"}}
+                <div style={{position: "absolute", left: "50%", transform: "translate(-50%)", marginTop: "4rem"}}
                      className="breadcrumbs text-sm">
                     <ul>
                         {selection1 &&
@@ -83,9 +83,8 @@ export default function Booking() {
 
 
                 {(firstCard) &&
-                    <div className="cardCss">
-
-                        <div className="card w-96 bg-base-100 shadow-sm">
+                    <div className="cardGroupCss">
+                        <div className="card w-96 bg-base-100 shadow-sm cardCss">
                             <div className="card-body">
                                 {/*<span className="badge badge-xs badge-warning">Most Popular</span>*/}
                                 <div className="flex justify-between">
@@ -105,12 +104,12 @@ export default function Booking() {
                                         setFirstCard(false);
                                         setSecondCard(true);
                                     }}
-                                            className="btn btn-primary btn-block">Select
+                                            className="button-23" style={{width: "100%"}}>Select
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        <div className="card w-96 bg-base-100 shadow-sm">
+                        <div className="card w-96 bg-base-100 shadow-sm cardCss">
                             <div className="card-body">
                                 {/* <span className="badge badge-xs badge-warning">Most Popular</span> */}
                                 <div className="flex justify-between">
@@ -130,18 +129,19 @@ export default function Booking() {
                                         setSecondCard(true);
 
                                     }}
-                                            className="btn btn-primary btn-block">Select
+                                            className="button-23" style={{width: "100%"}}>Select
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 }
-                
+
+                <div className="cardGroupCss">
                 {(secondCard && isGelX) && services
                     .filter(service => service.serviceName.startsWith("Gel X") && !service.serviceName.includes("Soak"))
-                    .map(service => (<div key={service.serviceName} className="cardCss">
-                        <div className="card w-96 bg-base-100 shadow-sm">
+                    .map(service => (<div key={service.serviceName}>
+                        <div className="card w-96 bg-base-100 shadow-sm cardCss">
                             <div className="card-body">
                                 {/*<span className="badge badge-xs badge-warning">Most Popular</span>*/}
                                 <div className="flex justify-between">
@@ -156,178 +156,16 @@ export default function Booking() {
                                 </ul>
                                 <div className="mt-6">
                                     <button onClick={() => {
-                                        setSelection2(service.serviceName);
+                                        setSelection2(service.serviceName.replace("Gel X", ""));
                                         setSecondCard(false);
                                         setThirdCard(true);
                                     }}
-                                            className="btn btn-primary btn-block">Select
+                                            className="button-23" style={{width: "100%"}}>Select
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>))}
-
-                {(thirdCard && isGelX && selection2.includes("Full Set")) && services
-                    .filter(service => service.serviceName.includes("Soak"))
-                    .map(service => (<div key={service.serviceName}>
-                        <div className="card w-96 bg-base-100 shadow-sm">
-                            <div className="card-body">
-                                <div className="flex justify-between">
-                                    <h2 className="text-3xl font-bold">{service.serviceName}</h2>
-                                    <span className="text-xl">${service.servicePrice}</span>
-                                </div>
-                                <ul className="mt-6 flex flex-col gap-2 text-xs">
-                                    <li>
-                                        {service.serviceDescription}
-                                    </li>
-
-                                </ul>
-                                <div className="mt-6">
-                                    <button onClick={() => {
-                                        setSelection2(service.serviceName);
-                                        setSecondCard(false);
-                                        setThirdCard(true);
-                                    }}
-                                            className="btn btn-primary btn-block">Select
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>))}
-
-                {/*{(secondCard && isGelX) &&*/}
-                {/*    <div style={{*/}
-                {/*        display: "flex",*/}
-                {/*        flexDirection: "column",*/}
-                {/*        alignItems: "center",*/}
-                {/*        justifyContent: "center",*/}
-                {/*        minHeight: "100vh",*/}
-                {/*        gap: "2rem",*/}
-                {/*        marginTop: "-6rem"*/}
-                {/*    }}>*/}
-                {/*        <div className="card w-96 bg-base-100 shadow-sm">*/}
-                {/*            <div className="card-body">*/}
-                {/*                /!*<span className="badge badge-xs badge-warning">Most Popular</span>*!/*/}
-                {/*                <div className="flex justify-between">*/}
-                {/*                    <h2 className="text-3xl font-bold">GEL-X</h2>*/}
-                {/*                    <span className="text-xl">$40</span>*/}
-                {/*                </div>*/}
-                {/*                <ul className="mt-6 flex flex-col gap-2 text-xs">*/}
-                {/*                    <li>*/}
-                {/*                        Hello ice cream in my moth*/}
-                {/*                    </li>*/}
-
-                {/*                </ul>*/}
-                {/*                <div className="mt-6">*/}
-                {/*                    <button onClick={() => {*/}
-                {/*                        setSelection1("Gel X");*/}
-                {/*                        setIsGelX(true);*/}
-                {/*                        setFirstCard(false);*/}
-                {/*                    }}*/}
-                {/*                            className="btn btn-primary btn-block">Select*/}
-                {/*                    </button>*/}
-                {/*                </div>*/}
-                {/*            </div>*/}
-                {/*        </div>*/}
-                {/*        <div className="card w-96 bg-base-100 shadow-sm">*/}
-                {/*            <div className="card-body">*/}
-                {/*                /!* <span className="badge badge-xs badge-warning">Most Popular</span> *!/*/}
-                {/*                <div className="flex justify-between">*/}
-                {/*                    <h2 className="text-3xl font-bold">Gel Overlay </h2>*/}
-                {/*                    <span className="text-xl">$40</span>*/}
-                {/*                </div>*/}
-                {/*                <ul className="mt-6 flex flex-col gap-2 text-xs">*/}
-                {/*                    <li>*/}
-                {/*                        <span>Natural Nails</span>*/}
-                {/*                    </li>*/}
-                {/*                </ul>*/}
-                {/*                <div className="mt-6">*/}
-                {/*                    <button onClick={() => {*/}
-                {/*                        setSelection2("Gel Overlay");*/}
-                {/*                        setIsGelOverlay(true);*/}
-                {/*                        setFirstCard(false);*/}
-                {/*                    }}*/}
-                {/*                            className="btn btn-primary btn-block">Select*/}
-                {/*                    </button>*/}
-                {/*                </div>*/}
-                {/*            </div>*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*}*/}
-
-                {/*{(secondCard && isGelOverlay) &&*/}
-                {/*    <div style={{*/}
-                {/*        display: "flex",*/}
-                {/*        flexDirection: "column",*/}
-                {/*        alignItems: "center",*/}
-                {/*        justifyContent: "center",*/}
-                {/*        minHeight: "100vh",*/}
-                {/*        gap: "2rem",*/}
-                {/*        marginTop: "-6rem"*/}
-                {/*    }}>*/}
-                {/*        <div className="card w-96 bg-base-100 shadow-sm">*/}
-                {/*            <div className="card-body">*/}
-                {/*                /!*<span className="badge badge-xs badge-warning">Most Popular</span>*!/*/}
-                {/*                <div className="flex justify-between">*/}
-                {/*                    <h2 className="text-3xl font-bold">Full Set</h2>*/}
-                {/*                    <span className="text-xl">$40</span>*/}
-                {/*                </div>*/}
-                {/*                <ul className="mt-6 flex flex-col gap-2 text-xs">*/}
-                {/*                    <li>*/}
-                {/*                        Will you need a Soak off ? $10 + 30 Minutes*/}
-                {/*                    </li>*/}
-
-                {/*                </ul>*/}
-                {/*                <div className="mt-6">*/}
-                {/*                    <button onClick={() => {*/}
-                {/*                        setSelection2("Full Set");*/}
-                {/*                        setSecondCard(false);*/}
-                {/*                        setThirdCard(true);*/}
-                {/*                    }}*/}
-                {/*                            className="btn btn-primary btn-block">Select*/}
-                {/*                    </button>*/}
-                {/*                </div>*/}
-                {/*            </div>*/}
-                {/*        </div>*/}
-                {/*        <div className="card w-96 bg-base-100 shadow-sm">*/}
-                {/*            <div className="card-body">*/}
-                {/*                /!* <span className="badge badge-xs badge-warning">Most Popular</span> *!/*/}
-                {/*                <div className="flex justify-between">*/}
-                {/*                    <h2 className="text-3xl font-bold">Rebalance </h2>*/}
-                {/*                    <span className="text-xl">$35</span>*/}
-                {/*                </div>*/}
-                {/*                <ul className="mt-6 flex flex-col gap-2 text-xs">*/}
-                {/*                    <li>*/}
-                {/*                        <span>x</span>*/}
-                {/*                    </li>*/}
-                {/*                </ul>*/}
-                {/*                <div className="mt-6">*/}
-                {/*                    <button onClick={() => {*/}
-                {/*                        setSelection2("Gel Overlay");*/}
-                {/*                        setSecondCard(false);*/}
-                {/*                        setThirdCard(true);*/}
-                {/*                    }}*/}
-                {/*                            className="btn btn-primary btn-block">Select*/}
-                {/*                    </button>*/}
-                {/*                </div>*/}
-                {/*            </div>*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*}*/}
-
-
-                <div className="fab fab-flower">
-                    {/* a focusable div with tabIndex is necessary to work on all browsers. role="button" is necessary for accessibility */}
-                    <div tabIndex={0} role="button" className="btn btn-lg btn-circle btn-success">F</div>
-
-                    {/* Main Action button replaces the original button when FAB is open */}
-                    <button className="fab-main-action btn btn-circle btn-lg">M</button>
-
-                    {/* buttons that show up when FAB is open */}
-                    <button className="btn btn-lg btn-circle">A</button>
-                    <button className="btn btn-lg btn-circle">B</button>
-                    <button className="btn btn-lg btn-circle">C</button>
-                    <button className="btn btn-lg btn-circle">D</button>
                 </div>
             </span>
 
