@@ -58,6 +58,7 @@ export default function Booking() {
     const [secondCard, setSecondCard] = useState<boolean>(false);
     const [thirdCard, setThirdCard] = useState<boolean>(false);
     const [fourthCard, setFourthCard] = useState<boolean>(false);
+    const [calendarCard, setCalendarCard] = useState<boolean>(false);
 
     return (
         <div>
@@ -102,6 +103,9 @@ export default function Booking() {
                         }
                         {selection4 &&
                             <li><a onClick={() => {
+                                setFourthCard(true);
+                                setCalendarCard(false);
+                                setSelection4("");
 
                             }}>{selection4}</a></li>
                         }
@@ -196,7 +200,6 @@ export default function Booking() {
                             </div>))}
                     </div>
                 }
-
 
                 {(secondCard && isGelOverlay) &&
                     <div className="cardGroupCss">
@@ -333,8 +336,8 @@ export default function Booking() {
                                 <div className="mt-6">
                                     <button onClick={() => {
                                         setSelection4("Almond");
-                                        setThirdCard(false);
-                                        setFourthCard(true);
+                                        setFourthCard(false);
+                                        setCalendarCard(true);
                                         setNailShape("Almond");
                                     }}
                                             className="button-23" style={{width: "100%"}}>Select
@@ -358,8 +361,8 @@ export default function Booking() {
                                 <div className="mt-6">
                                     <button onClick={() => {
                                         setSelection4("Stiletto");
-                                        setThirdCard(false);
-                                        setFourthCard(true);
+                                        setFourthCard(false);
+                                        setCalendarCard(true);
                                         setNailLength("Stiletto");
 
                                     }}
@@ -384,8 +387,8 @@ export default function Booking() {
                                 <div className="mt-6">
                                     <button onClick={() => {
                                         setSelection4("Square");
-                                        setThirdCard(false);
-                                        setFourthCard(true);
+                                        setFourthCard(false);
+                                        setCalendarCard(true);
                                         setNailLength("Square");
                                     }}
                                             className="button-23" style={{width: "100%"}}>Select
@@ -395,6 +398,29 @@ export default function Booking() {
                         </div>
                     </div>
                 }
+
+                {(calendarCard) &&
+                    <div className="cardGroupCss">
+                        <div className="card w-96 bg-base-100 shadow-sm cardCss">
+                            <div className="card-body">
+                                Calendar Card
+                                <ul className="mt-6 flex flex-col gap-2 text-xs">
+                                    <li>
+                                        ...
+                                    </li>
+
+                                </ul>
+                                <div className="mt-6">
+                                    <button onClick={() => {
+                                    }}
+                                            className="button-23" style={{width: "100%"}}>Proceed
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
 
 
 
