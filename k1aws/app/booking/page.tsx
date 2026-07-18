@@ -1,5 +1,4 @@
 "use client";
-import {Calendar} from "@/components/ui/calendar"
 import React, {useEffect} from "react";
 import {useState} from "react";
 
@@ -15,8 +14,8 @@ interface Service {
 
 export default function Booking() {
     const [date, setDate] = useState<Date | undefined>(new Date())
-
     const [services, setServices] = useState<Service[]>([]);
+
 
     useEffect(() => {
         async function getServices() {
@@ -70,24 +69,43 @@ export default function Booking() {
 
                          {/*TODO: Create navigation clickable backwards*/}
                         {selection1 &&
-                            <li><a>{selection1}</a></li>
+                            <li><a onClick={() => {
+                                setIsGelX(false);
+                                setIsGelOverlay(false);
+                                setFirstCard(true);
+                                setSecondCard(false);
+                                setThirdCard(false);
+                                setFourthCard(false);
+                                setSelection1("");
+                                setSelection2("");
+                                setSelection3("");
+                                setSelection4("");
+                            }}>{selection1}</a></li>
                         }
                         {selection2 &&
                             <li><a onClick={() => {
-
+                                setSecondCard(true);
+                                setThirdCard(false);
+                                setFourthCard(false);
+                                setSelection2("");
+                                setSelection3("");
+                                setSelection4("");
                             }}>{selection2}</a></li>
                         }
                         {selection3 &&
-                            <li><a>{selection3}</a></li>
+                            <li><a onClick={() => {
+                                setThirdCard(true);
+                                setFourthCard(false);
+                                setSelection3("");
+                                setSelection4("");
+                            }}>{selection3}</a></li>
                         }
                         {selection4 &&
-                            <li><a>{selection4}</a></li>
+                            <li><a onClick={() => {
+
+                            }}>{selection4}</a></li>
                         }
                     </ul>
-                    {/*<button onClick={() => {*/}
-                    {/*    console.log("isgelx: ", isGelX, "isgelOverlay: ", isGelOverlay);*/}
-                    {/*    console.log(firstCard, secondCard, thirdCard);*/}
-                    {/*}}> test</button>*/}
                 </div>
 
 
@@ -132,7 +150,7 @@ export default function Booking() {
                                 </ul>
                                 <div className="mt-6">
                                     <button onClick={() => {
-                                        setSelection2("Gel Overlay");
+                                        setSelection1("Gel Overlay");
                                         setIsGelOverlay(true);
                                         setFirstCard(false);
                                         setSecondCard(true);
@@ -146,9 +164,9 @@ export default function Booking() {
                     </div>
                 }
 
-                {secondCard &&
+                {(secondCard && isGelX) &&
                     <div className="cardGroupCss">
-                        {(secondCard && isGelX) && services
+                        { services
                             .filter(service => service.serviceName.startsWith("Gel X") && !service.serviceName.includes("Soak"))
                             .map(service => (<div key={service.serviceName}>
                                 <div className="card w-96 bg-base-100 shadow-sm cardCss">
@@ -179,7 +197,42 @@ export default function Booking() {
                     </div>
                 }
 
-                {(isGelX && thirdCard) &&
+
+                {(secondCard && isGelOverlay) &&
+                    <div className="cardGroupCss">
+                        { services
+                            .filter(service => service.serviceName.startsWith("Gel Overlay") && !service.serviceName.includes("Removal"))
+                            .map(service => (<div key={service.serviceName}>
+                                <div className="card w-96 bg-base-100 shadow-sm cardCss">
+                                    <div className="card-body">
+                                        {/*<span className="badge badge-xs badge-warning">Most Popular</span>*/}
+                                        <div className="flex justify-between">
+                                            <h2 className="text-3xl font-bold">{service.serviceName}</h2>
+                                            <span className="text-xl">${service.servicePrice}</span>
+                                        </div>
+                                        <ul className="mt-6 flex flex-col gap-2 text-xs">
+                                            <li>
+                                                {service.serviceDescription}
+                                            </li>
+
+                                        </ul>
+                                        <div className="mt-6">
+                                            <button onClick={() => {
+                                                if (service.serviceName === "Gel Overlay") {setSelection2("Gel Overlay");}
+                                                else {setSelection2(service.serviceName.replace("Gel Overlay", ""));}
+                                                setSecondCard(false);
+                                                setThirdCard(true);
+                                            }}
+                                                    className="button-23" style={{width: "100%"}}>Select
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>))}
+                    </div>
+                }
+
+                {(thirdCard) &&
                     <div className="cardGroupCss">
                         Please select a length
                         <div className="card w-96 bg-base-100 shadow-sm cardCss">
@@ -261,7 +314,7 @@ export default function Booking() {
                     </div>
                 }
 
-                {(isGelX && fourthCard) &&
+                {(fourthCard) &&
                     <div className="cardGroupCss">
                         Please select a Shape
                         <div className="card w-96 bg-base-100 shadow-sm cardCss">
