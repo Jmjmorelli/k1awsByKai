@@ -83,15 +83,7 @@ export default function Booking() {
 
 
                 {(firstCard) &&
-                    <div style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        minHeight: "100vh",
-                        gap: "2rem",
-                        marginTop: "-6rem"
-                    }}>
+                    <div className="cardCss">
 
                         <div className="card w-96 bg-base-100 shadow-sm">
                             <div className="card-body">
@@ -148,14 +140,7 @@ export default function Booking() {
                 
                 {(secondCard && isGelX) && services
                     .filter(service => service.serviceName.startsWith("Gel X") && !service.serviceName.includes("Soak"))
-                    .map(service => (<div key={service.serviceName} style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        minHeight: "50vh",
-                        marginTop: "-6rem"
-                    }}>
+                    .map(service => (<div key={service.serviceName} className="cardCss">
                         <div className="card w-96 bg-base-100 shadow-sm">
                             <div className="card-body">
                                 {/*<span className="badge badge-xs badge-warning">Most Popular</span>*/}
