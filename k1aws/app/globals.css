@@ -505,6 +505,19 @@ span {
     }
 }
 
+.react-day-picker{
+    --rdp-accent-color: green; /* Use blue as the accent color. */
+    --rdp-accent-background-color: green;
+}
+
+.rdp-root {
+    --rdp-accent-color: green; /* Use blue as the accent color. */
+    --rdp-accent-background-color: green;
+}
+[data-theme="dark"] .rdp-root {
+    --rdp-accent-color: yellow; /* Use yellow as the accent color in dark mode. */
+}
+
 :root {
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);

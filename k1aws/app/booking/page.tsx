@@ -2,6 +2,11 @@
 import React, {useEffect} from "react";
 import {useState} from "react";
 
+import dayjs, {Dayjs} from 'dayjs';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
+import {DateCalendar} from '@mui/x-date-pickers/DateCalendar';
+
 //adidas acid orange
 
 interface Service {
@@ -13,8 +18,10 @@ interface Service {
 }
 
 export default function Booking() {
-    const [date, setDate] = useState<Date | undefined>(new Date())
+    const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
     const [services, setServices] = useState<Service[]>([]);
+    const dateToday = new Date();
+    const [value, setValue] = React.useState<Dayjs | null>(dayjs());
 
 
     useEffect(() => {
@@ -170,7 +177,7 @@ export default function Booking() {
 
                 {(secondCard && isGelX) &&
                     <div className="cardGroupCss">
-                        { services
+                        {services
                             .filter(service => service.serviceName.startsWith("Gel X") && !service.serviceName.includes("Soak"))
                             .map(service => (<div key={service.serviceName}>
                                 <div className="card w-96 bg-base-100 shadow-sm cardCss">
@@ -203,7 +210,7 @@ export default function Booking() {
 
                 {(secondCard && isGelOverlay) &&
                     <div className="cardGroupCss">
-                        { services
+                        {services
                             .filter(service => service.serviceName.startsWith("Gel Overlay") && !service.serviceName.includes("Removal"))
                             .map(service => (<div key={service.serviceName}>
                                 <div className="card w-96 bg-base-100 shadow-sm cardCss">
@@ -221,8 +228,11 @@ export default function Booking() {
                                         </ul>
                                         <div className="mt-6">
                                             <button onClick={() => {
-                                                if (service.serviceName === "Gel Overlay") {setSelection2("Gel Overlay");}
-                                                else {setSelection2(service.serviceName.replace("Gel Overlay", ""));}
+                                                if (service.serviceName === "Gel Overlay") {
+                                                    setSelection2("Gel Overlay");
+                                                } else {
+                                                    setSelection2(service.serviceName.replace("Gel Overlay", ""));
+                                                }
                                                 setSecondCard(false);
                                                 setThirdCard(true);
                                             }}
@@ -403,10 +413,40 @@ export default function Booking() {
                     <div className="cardGroupCss">
                         <div className="card w-96 bg-base-100 shadow-sm cardCss">
                             <div className="card-body">
-                                Calendar Card
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DateCalendar
+                                        value={value}
+                                        onChange={(newValue) => setValue(newValue)}
+                                        sx={{
+                                            bgcolor: 'transparent'
+                                        }}
+                                        slotProps={{
+                                            day: {
+                                                sx: {
+                                                    // Change the color of selected days
+                                                    '&.Mui-selected': {
+                                                        backgroundColor: 'green',
+                                                        color: 'black',
+                                                        '&:hover': { backgroundColor: 'yellow' },
+                                                    },
+                                                    // Change the color of the current day
+                                                    '&.MuiPickersDay-today': {
+                                                        borderColor: 'secondary.main',
+                                                        color: 'secondary.main',
+                                                    },
+                                                }
+                                            }
+                                        }}
+                                    />
+                                </LocalizationProvider>
+
+
+                                {/*}} mode="single" selected={selectedDate} onSelect={setSelectedDate}*/}
+                                {/*components={{}}/>*/}
+                                {/*<Calendar></Calendar>*/}
                                 <ul className="mt-6 flex flex-col gap-2 text-xs">
+                                    {value?.toDate().toLocaleDateString()}
                                     <li>
-                                        ...
                                     </li>
 
                                 </ul>
