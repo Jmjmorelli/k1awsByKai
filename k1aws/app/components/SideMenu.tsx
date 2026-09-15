@@ -1,8 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { text } from "stream/consumers";
+import { useState } from "react";
 export default function SideMenu() {
     const [open, setOpen] = useState(false);
 

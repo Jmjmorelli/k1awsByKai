@@ -1,0 +1,10 @@
+.header { align-items: center; backdrop-filter: blur(14px); background: rgb(249 217 224 / 84%); border-bottom: 1px solid rgb(131 14 80 / 12%); display: flex; height: 76px; justify-content: space-between; padding: 0 clamp(1.25rem, 4vw, 4.5rem); position: sticky; top: 0; z-index: 20; }
+.brand { color: #830e50; font-family: playfairFont, serif; font-size: 1.35rem; font-weight: 800; letter-spacing: .08em; text-decoration: none; }
+.brand span { font-family: inherit !important; font-size: 1.65rem; }
+.brand small { font-family: garamondFont, serif; font-size: .86rem; font-style: italic; font-weight: 400; letter-spacing: 0; margin-left: .16rem; }
+.nav { display: flex; gap: clamp(1.15rem, 3vw, 3rem); }
+.nav a { color: #6d1948; font-family: garamondFont, serif; font-size: 1.08rem; text-decoration: none; transition: color .2s ease; }
+.nav a:hover { color: #be4a79; }
+.bookLink { border-bottom: 1px solid #830e50; color: #830e50; font-size: .86rem; letter-spacing: .08em; padding-bottom: .3rem; text-decoration: none; text-transform: uppercase; }
+.bookLink span { font-family: inherit !important; margin-left: .25rem; }
+@media (max-width: 600px) { .header { height: 65px; } .nav { display: none; } .brand { font-size: 1.15rem; } }
