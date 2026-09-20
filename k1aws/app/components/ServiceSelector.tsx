@@ -91,6 +91,7 @@ export default function ServiceSelector() {
   const choosingShape = Boolean(selectedService && needsShape && !selectedShape);
   const selectionComplete = Boolean(selectedService && !choosingSize && !choosingShape);
   const title = choosingSize ? "Choose your length" : choosingShape ? "Choose your shape" : selectionComplete ? "Your selection" : selectedCategory ? `Services / ${selectedCategory.name}` : "Services";
+  const menuStep = choosingSize ? "size" : choosingShape ? "shape" : selectionComplete ? "complete" : selectedCategory ? "service" : "category";
 
   const goBack = () => {
     if (selectionComplete) {
@@ -121,39 +122,46 @@ export default function ServiceSelector() {
 
     {expanded && <div className={`${styles.options} ${menuVisible ? styles.menuVisible : ""} ${selectedCategory ? styles.showingServices : ""}`} aria-live="polite">
       {menuVisible && <>
-        {!catalog && !error && <p className={styles.status}>Loading services…</p>}
-        {error && <p className={styles.status}>{error}</p>}
-        {!selectedCategory && catalog?.categories.map((category, index) => <button key={category.id} type="button" onClick={() => chooseCategory(category)}>
-          <span>{String(index + 1).padStart(2, "0")}</span><strong>{category.name}</strong><small>{category.description ?? "View available services."}</small><b>→</b>
-        </button>)}
-        {selectedCategory && !selectedService && <>
-          <button className={styles.back} type="button" onClick={goBack}>← Back to categories</button>
-          {selectedCategory.services.map((service, index) => <button className={styles.service} key={service.id} type="button" onClick={() => chooseService(service)}>
-            <span>{String(index + 1).padStart(2, "0")}</span><strong>{service.name}</strong><small>{service.description ?? `${service.baseDurationMinutes} minutes`}</small><b>${service.basePrice}</b>
+        <div className={styles.menuContent} key={menuStep}>
+          {!catalog && !error && <p className={styles.status}>Loading services…</p>}
+          {error && <p className={styles.status}>{error}</p>}
+          {!selectedCategory && catalog?.categories.map((category, index) => <button key={category.id} type="button" onClick={() => chooseCategory(category)}>
+            <span>{String(index + 1).padStart(2, "0")}</span><strong>{category.name}</strong><small>{category.description ?? "View available services."}</small><b>→</b>
           </button>)}
-        </>}
-        {choosingSize && <>
-          <button className={styles.back} type="button" onClick={goBack}>← Back to services</button>
-          {[...(options?.sizes ?? [])].sort((a, b) => a.displayOrder - b.displayOrder).map((size, index) => <button className={styles.service} key={size.id} type="button" onClick={() => setSelectedSize(size)}>
-            <span>{String(index + 1).padStart(2, "0")}</span><strong>{size.name}</strong><b>→</b>
-          </button>)}
-        </>}
-        {choosingShape && <>
-          <button className={styles.back} type="button" onClick={goBack}>← Back</button>
-          {[...(options?.shapes ?? [])].sort((a, b) => a.displayOrder - b.displayOrder).map((shape, index) => <button className={styles.service} key={shape.id} type="button" onClick={() => setSelectedShape(shape)}>
-            <span>{String(index + 1).padStart(2, "0")}</span><strong>{shape.name}</strong><b>→</b>
-          </button>)}
-        </>}
-        {selectionComplete && <>
-          <button className={styles.back} type="button" onClick={goBack}>← Back</button>
-          <div className={styles.selectionSummary}>
-            <p>{selectedCategory?.name} / {selectedService?.name}</p>
-            {selectedSize && <p>{selectedSize.name}</p>}
-            {selectedShape && <p>{selectedShape.name}</p>}
-          </div>
-        </>}
+          {selectedCategory && !selectedService && <>
+            <button className={styles.back} type="button" onClick={goBack}>← Back to categories</button>
+            {selectedCategory.services.map((service, index) => <button className={styles.service} key={service.id} type="button" onClick={() => chooseService(service)}>
+              <span>{String(index + 1).padStart(2, "0")}</span><strong>{service.name}</strong><small>{service.description ?? `${service.baseDurationMinutes} minutes`}</small><b>${service.basePrice}</b>
+            </button>)}
+          </>}
+          {choosingSize && <>
+            <button className={styles.back} type="button" onClick={goBack}>← Back to services</button>
+            {[...(options?.sizes ?? [])].sort((a, b) => a.displayOrder - b.displayOrder).map((size, index) => <button className={styles.service} key={size.id} type="button" onClick={() => setSelectedSize(size)}>
+              <span>{String(index + 1).padStart(2, "0")}</span><strong>{size.name}</strong><b>→</b>
+            </button>)}
+          </>}
+          {choosingShape && <>
+            <button className={styles.back} type="button" onClick={goBack}>← Back to length</button>
+            {[...(options?.shapes ?? [])].sort((a, b) => a.displayOrder - b.displayOrder).map((shape, index) => <button className={styles.service} key={shape.id} type="button" onClick={() => setSelectedShape(shape)}>
+              <span>{String(index + 1).padStart(2, "0")}</span><strong>{shape.name}</strong><b>→</b>
+            </button>)}
+          </>}
+          {selectionComplete && <>
+            <button className={styles.back} type="button" onClick={goBack}>← Back</button>
+            <div className={styles.selectionSummary}><p>Selection complete.</p></div>
+          </>}
+        </div>
       </>}
     </div>}
+    {expanded && selectedCategory && <aside className={styles.selectionTrail} aria-label="Current selection">
+      <p>Your selection</p>
+      <ol>
+        <li><span>Category</span><strong>{selectedCategory.name}</strong></li>
+        {selectedService && <li><span>Service</span><strong>{selectedService.name}</strong></li>}
+        {selectedSize && <li><span>Length</span><strong>{selectedSize.name}</strong></li>}
+        {selectedShape && <li><span>Shape</span><strong>{selectedShape.name}</strong></li>}
+      </ol>
+    </aside>}
     {expanded && <p className={styles.helper}>{choosingSize ? "Select a nail length." : choosingShape ? "Select a nail shape." : selectionComplete ? "Your service is selected." : selectedCategory ? "Choose a service to continue." : "Choose a service category to see its options."}</p>}
   </section>;
 }
