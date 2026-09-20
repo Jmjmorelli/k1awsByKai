@@ -7,9 +7,9 @@ import styles from "./page.module.css";
 import mark from "../public/K1AWS.png";
 
 const collections = [
-    ["01", "THE CLASSIC", "Clean color. Perfect shape. No notes."],
-    ["02", "THE CHROME", "Light-catching finishes in any shade."],
-    ["03", "THE CUSTOM", "One-of-one details, made around you."],
+    ["/", "THE CLASSIC", "Clean color. Perfect shape. No notes."],
+    ["//", "THE CHROME", "Light-catching finishes in any shade."],
+    ["///", "THE CUSTOM", "One-of-one details, made around you."],
 ];
 
 export default function Home() {
@@ -21,14 +21,14 @@ export default function Home() {
                 {/*<Image src={kai} alt="Kailen, nail artist and founder of K1aws" priority*/}
                 {/*       sizes="(max-width: 700px) 74vw, 36vw"/>*/}
             </div>
-            <h1> KEEP KALM<br/>& BOOK WITH KLAWS</h1>
+            <h1> KEEP KALM<br/>BOOK WITH KLAWS</h1>
             <p className={styles.heroDescriptor}>Some nonsense here</p>
-            <a className={styles.scrollLink} href="#collections">Explore collections <span>↓</span></a>
+            <a className={styles.scrollLink} href="#collections">Explore collections <span></span></a>
         </section>
 
         <section className={styles.collections} id="collections">
             <div className={styles.titleRow}><ParallaxText className={styles.parallaxTitle}><h2>COLLECTIONS</h2>
-            </ParallaxText><p>SELECT A DIRECTION<br/>THEN MAKE IT YOURS.</p></div>
+            </ParallaxText><p><br/>.</p></div>
             <div className={styles.collectionGrid}>{collections.map(([number, title, description], index) => <article
                 className={styles.collection} key={title}>
                 <div className={`${styles.collectionVisual} ${styles[`visual${index + 1}`]}`}><span>{number}</span><i/>
