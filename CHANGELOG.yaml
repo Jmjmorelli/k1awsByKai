@@ -1,0 +1,46 @@
+releases:
+  - id: k1awsbykai-0-4-0
+    version: v0.4.0
+    date: 2026-09-20
+    repository: k1awsbykai
+    category: frontend
+    product: K1AWS by Kai
+    summary: Guided service selection is now presented as a focused booking menu.
+    changes:
+      - type: changed
+        text: Added animated transitions between service-selection steps and a visible summary of the current selection.
+
+  - id: k1awsbykai-0-3-0
+    version: v0.3.0
+    date: 2026-09-20
+    repository: k1awsbykai
+    category: frontend
+    product: K1AWS by Kai
+    summary: Service choices now include the options needed to finish a selection.
+    changes:
+      - type: added
+        text: Added length and shape choices when a selected service requires them, with back navigation at every step.
+
+  - id: k1awsbykai-0-2-0
+    version: v0.2.0
+    date: 2026-09-20
+    repository: k1awsbykai
+    category: frontend
+    product: K1AWS by Kai
+    summary: The booking experience now loads the live service catalog.
+    changes:
+      - type: added
+        text: Added service categories, service details, pricing, and availability feedback sourced from the service catalog API.
+      - type: changed
+        text: Added a dedicated booking entry point so visitors can open the service menu when ready.
+
+  - id: k1awsbykai-0-1-0
+    version: v0.1.0
+    date: 2026-09-08
+    repository: k1awsbykai
+    category: frontend
+    product: K1AWS by Kai
+    summary: Initial documented frontend inventory.
+    changes:
+      - type: changed
+        text: Recorded environment coverage and service catalog API consumption.

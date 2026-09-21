@@ -88,9 +88,9 @@ export default function ServiceSelector() {
   const needsSize = Boolean(selectedCategory?.requiresSize);
   const needsShape = Boolean(selectedCategory?.requiresShape);
   const choosingSize = Boolean(selectedService && needsSize && !selectedSize);
-  const choosingShape = Boolean(selectedService && needsShape && !selectedShape);
+  const choosingShape = Boolean(selectedService && needsShape && (!needsSize || selectedSize) && !selectedShape);
   const selectionComplete = Boolean(selectedService && !choosingSize && !choosingShape);
-  const title = choosingSize ? "Choose your length" : choosingShape ? "Choose your shape" : selectionComplete ? "Your selection" : selectedCategory ? `Services / ${selectedCategory.name}` : "Services";
+  const title = choosingSize ? "Choose your length" : choosingShape ? "Choose your shape" : selectionComplete ? "Your selection" : selectedCategory ? `Services / ${selectedCategory.name}` : "123";
   const menuStep = choosingSize ? "size" : choosingShape ? "shape" : selectionComplete ? "complete" : selectedCategory ? "service" : "category";
 
   const goBack = () => {
@@ -114,10 +114,12 @@ export default function ServiceSelector() {
 
   return <section className={`${styles.experience} ${expanded ? styles.expanded : ""}`} aria-label="The essentials">
     <button className={styles.close} type="button" onClick={close} aria-label="Close essentials">Close <span>×</span></button>
-    <div className={styles.title}><p>{title}</p><h2>THE<br />ESSENTIALS.</h2></div>
+    <div className={styles.title}>
+      {/*<p>{title}</p>*/}
+      <h2>THE<br />ESSENTIALS.</h2></div>
 
     {!expanded && <div className={styles.entry}>
-      <button type="button" onClick={open} aria-expanded="false">Explore services <span>→</span></button>
+      <button type="button" onClick={open} aria-expanded="false">BOOK NOW<span></span></button>
     </div>}
 
     {expanded && <div className={`${styles.options} ${menuVisible ? styles.menuVisible : ""} ${selectedCategory ? styles.showingServices : ""}`} aria-live="polite">
