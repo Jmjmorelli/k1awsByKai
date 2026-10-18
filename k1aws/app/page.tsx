@@ -34,13 +34,13 @@ export default function Home() {
                 className={styles.collection} key={title}>
                 <div className={`${styles.collectionVisual} `}><span>{number}</span><i/>
                 </div>
-                <h3>{title}</h3><p>{description}</p><Link href="/booking">Explore <b>↗</b></Link></article>)}</div>
+                <h3>{title}</h3><p>{description}</p><Link href="/booking">Explore <b></b></Link></article>)}</div>
         </section>
 
         <section className={styles.finish} id="studio">
             <div className={styles.finishCopy}><p className={styles.label}></p><ParallaxText
                 className={styles.parallaxTitle}><h2>some inspirational<br/>text</h2></ParallaxText><p>A little bit about me... CHudington Supreme</p><Link href="/booking">Book
-                an appointment <b>↗</b></Link></div>
+                an appointment <b></b></Link></div>
             <div className={styles.finishImage}><Image src={mark} alt="K1aws by Kai"
                                                        sizes="(max-width: 700px) 100vw, 50vw"/></div>
         </section>

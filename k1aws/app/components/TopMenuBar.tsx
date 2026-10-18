@@ -10,7 +10,7 @@ export default function TopMenuBar() {
         <a href="#gallery">Gallery</a>
         <a href="#policies">Policies</a>
       </nav>
-      <Link className={styles.bookLink} href="/booking">Book now <span>↗</span></Link>
+      <Link className={styles.bookLink} href="/booking">Book now <span></span></Link>
     </header>
   );
 }

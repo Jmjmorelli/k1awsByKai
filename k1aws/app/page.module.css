@@ -180,7 +180,6 @@
 .finish a,
 .serviceRows > a,
 .cta a {
-  border-bottom: 1px solid currentColor;
   color: var(--ink);
   display: inline-block;
   font:
@@ -188,7 +187,6 @@
     sans-serif;
   letter-spacing: 0.13em;
   margin-top: 1.5rem;
-  padding-bottom: 0.45rem;
   text-decoration: none;
   text-transform: uppercase;
 }
