@@ -318,7 +318,7 @@
 }
 @media (max-width: 700px) {
   .hero {
-    min-height: 740px;
+    min-height: 100svh;
   }
   .hero:before {
     background: none;
