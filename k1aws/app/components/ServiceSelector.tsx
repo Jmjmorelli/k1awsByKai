@@ -139,25 +139,25 @@ export default function ServiceSelector() {
         <div className={styles.menuContent} key={menuStep}>
           {!catalog && !error && <p className={styles.status}>Loading services…</p>}
           {error && <p className={styles.status}>{error}</p>}
-          {!selectedCategory && catalog?.categories.map((category, index) => <button key={category.id} type="button" onClick={() => chooseCategory(category)}>
-            <span>{String(index + 1).padStart(2, "0")}</span><strong>{category.name}</strong><small>{category.description ?? "View available services."}</small><b>→</b>
+          {!selectedCategory && catalog?.categories.map((category) => <button key={category.id} type="button" onClick={() => chooseCategory(category)}>
+            <strong>{category.name}</strong><small>{category.description ?? "View available services."}</small><b>→</b>
           </button>)}
           {selectedCategory && !selectedService && <>
             <button className={styles.back} type="button" onClick={goBack}>← Back to categories</button>
-            {selectedCategory.services.map((service, index) => <button className={styles.service} key={service.id} type="button" onClick={() => chooseService(service)}>
-              <span>{String(index + 1).padStart(2, "0")}</span><strong>{service.name}</strong><small>{service.description ?? `${service.baseDurationMinutes} minutes`}</small><b>${service.basePrice}</b>
+            {selectedCategory.services.map((service) => <button className={styles.service} key={service.id} type="button" onClick={() => chooseService(service)}>
+              <strong>{service.name}</strong><small>{service.description ?? `${service.baseDurationMinutes} minutes`}</small><b>${service.basePrice}</b>
             </button>)}
           </>}
           {choosingSize && <>
             <button className={styles.back} type="button" onClick={goBack}>← Back to services</button>
-            {[...(options?.sizes ?? [])].sort((a, b) => a.displayOrder - b.displayOrder).map((size, index) => <button className={styles.service} key={size.id} type="button" onClick={() => setSelectedSize(size)}>
-              <span>{String(index + 1).padStart(2, "0")}</span><strong>{size.name}</strong><b>→</b>
+            {[...(options?.sizes ?? [])].sort((a, b) => a.displayOrder - b.displayOrder).map((size) => <button className={styles.service} key={size.id} type="button" onClick={() => setSelectedSize(size)}>
+              <strong>{size.name}</strong><b>→</b>
             </button>)}
           </>}
           {choosingShape && <>
             <button className={styles.back} type="button" onClick={goBack}>← Back to length</button>
-            {[...(options?.shapes ?? [])].sort((a, b) => a.displayOrder - b.displayOrder).map((shape, index) => <button className={styles.service} key={shape.id} type="button" onClick={() => setSelectedShape(shape)}>
-              <span>{String(index + 1).padStart(2, "0")}</span><strong>{shape.name}</strong><b>→</b>
+            {[...(options?.shapes ?? [])].sort((a, b) => a.displayOrder - b.displayOrder).map((shape) => <button className={styles.service} key={shape.id} type="button" onClick={() => setSelectedShape(shape)}>
+              <strong>{shape.name}</strong><b>→</b>
             </button>)}
           </>}
           {selectionComplete && <div className={styles.selectionSummary} aria-hidden="true" />}
