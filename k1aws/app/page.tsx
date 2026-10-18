@@ -47,9 +47,6 @@ export default function Home() {
 
         <div id="services"><ServiceSelector/></div>
 
-        <section className={styles.cta}><p className={styles.label}>Your next set</p><ParallaxText
-            className={styles.parallaxTitle}><h2>YOU&apos;RE<br/>DUE FOR IT.</h2></ParallaxText><Link href="/booking">Book
-            now <b>↗</b></Link></section>
         <footer><span>K1AWS BY KAI — ORLANDO, FL</span><a href="#home">BACK TO TOP ↑</a><span>© 2026</span></footer>
     </main>;
 }
