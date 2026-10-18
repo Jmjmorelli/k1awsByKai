@@ -143,19 +143,19 @@ export default function ServiceSelector() {
             <strong>{category.name}</strong><small>{category.description ?? "View available services."}</small><b>→</b>
           </button>)}
           {selectedCategory && !selectedService && <>
-            <button className={styles.back} type="button" onClick={goBack}>← Back to categories</button>
+            <button className={styles.back} type="button" onClick={goBack}>Back to categories</button>
             {selectedCategory.services.map((service) => <button className={styles.service} key={service.id} type="button" onClick={() => chooseService(service)}>
-              <strong>{service.name}</strong><small>{service.description ?? `${service.baseDurationMinutes} minutes`}</small><b>${service.basePrice}</b>
+              <strong>{service.name}</strong><small>{service.description ?? `${service.baseDurationMinutes} minutes`}</small><b className={styles.price}>${service.basePrice}</b>
             </button>)}
           </>}
           {choosingSize && <>
-            <button className={styles.back} type="button" onClick={goBack}>← Back to services</button>
+            <button className={styles.back} type="button" onClick={goBack}>Back to services</button>
             {[...(options?.sizes ?? [])].sort((a, b) => a.displayOrder - b.displayOrder).map((size) => <button className={styles.service} key={size.id} type="button" onClick={() => setSelectedSize(size)}>
               <strong>{size.name}</strong><b>→</b>
             </button>)}
           </>}
           {choosingShape && <>
-            <button className={styles.back} type="button" onClick={goBack}>← Back to length</button>
+            <button className={styles.back} type="button" onClick={goBack}>Back to length</button>
             {[...(options?.shapes ?? [])].sort((a, b) => a.displayOrder - b.displayOrder).map((shape) => <button className={styles.service} key={shape.id} type="button" onClick={() => setSelectedShape(shape)}>
               <strong>{shape.name}</strong><b>→</b>
             </button>)}

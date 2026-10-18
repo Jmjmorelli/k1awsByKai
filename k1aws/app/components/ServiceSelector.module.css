@@ -200,13 +200,19 @@
     width: calc(100% - 2.5rem);
   }
   .options button {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr auto;
   }
   .options button small {
     font-size: 0.95rem;
   }
   .options button b {
     display: none;
+  }
+  .options button .price {
+    align-self: center;
+    display: block;
+    grid-column: 2;
+    grid-row: 1;
   }
   .expanded .options button {
     padding: 1.4rem 0;
