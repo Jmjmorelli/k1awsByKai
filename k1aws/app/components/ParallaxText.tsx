@@ -23,20 +23,12 @@ export default function ParallaxText({ children, className }: ParallaxTextProps)
       const viewportCenter = window.innerHeight * 0.5;
       const elementCenter = top + height / 2;
       const progress = Math.max(-1, Math.min(1, (viewportCenter - elementCenter) / (window.innerHeight * 0.72)));
-      const arrivalProgress = Math.max(0, -progress);
       const offset = progress * -112;
-      const letterSpacing = -0.055 + arrivalProgress * 0.28;
       element.style.transform = `translate3d(0, ${offset}px, 0)`;
-      element.querySelectorAll("h2").forEach((heading) => {
-        (heading as HTMLElement).style.letterSpacing = `${letterSpacing}em`;
-      });
 
       if (progress >= 0) {
         hasArrivedRef.current = true;
         element.style.transform = "translate3d(0, 0, 0)";
-        element.querySelectorAll("h2").forEach((heading) => {
-          (heading as HTMLElement).style.letterSpacing = "-0.055em";
-        });
       }
       frame = 0;
     };

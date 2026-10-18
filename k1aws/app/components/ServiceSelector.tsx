@@ -116,7 +116,7 @@ export default function ServiceSelector() {
     <button className={styles.close} type="button" onClick={close} aria-label="Close essentials">Close <span>×</span></button>
     <div className={styles.title}>
       {/*<p>{title}</p>*/}
-      <h2>THE<br />ESSENTIALS.</h2></div>
+      <h2>MY<br />SERVICES</h2></div>
 
     {!expanded && <div className={styles.entry}>
       <button type="button" onClick={open} aria-expanded="false">BOOK NOW<span></span></button>

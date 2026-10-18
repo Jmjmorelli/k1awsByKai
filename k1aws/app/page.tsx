@@ -22,7 +22,7 @@ export default function Home() {
                 {/*<Image src={kai} alt="Kailen, nail artist and founder of K1aws" priority*/}
                 {/*       sizes="(max-width: 700px) 74vw, 36vw"/>*/}
             </div>
-            <h1> KEEP KALM<br/>BOOK WITH KLAWS</h1>
+            <h1> Keep Kalm<br/>Book with K1aws</h1>
             <p className={styles.heroDescriptor}>Some nonsense here</p>
             <a className={styles.scrollLink} href="#collections">Explore collections <span></span></a>
         </section>
