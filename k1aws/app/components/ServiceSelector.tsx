@@ -21,6 +21,7 @@ export default function ServiceSelector() {
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [selectedSize, setSelectedSize] = useState<CatalogOption | null>(null);
   const [selectedShape, setSelectedShape] = useState<CatalogOption | null>(null);
+  const [showCart, setShowCart] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const revealTimer = useRef<number | null>(null);
 
@@ -70,9 +71,11 @@ export default function ServiceSelector() {
     setSelectedService(null);
     setSelectedSize(null);
     setSelectedShape(null);
+    setShowCart(false);
   };
 
   const chooseCategory = (category: Category) => {
+    setShowCart(false);
     setSelectedCategory(category);
     setSelectedService(null);
     setSelectedSize(null);
@@ -80,6 +83,7 @@ export default function ServiceSelector() {
   };
 
   const chooseService = (service: Service) => {
+    setShowCart(false);
     setSelectedService(service);
     setSelectedSize(null);
     setSelectedShape(null);
@@ -93,7 +97,15 @@ export default function ServiceSelector() {
   const title = choosingSize ? "Choose your length" : choosingShape ? "Choose your shape" : selectionComplete ? "Your selection" : selectedCategory ? `Services / ${selectedCategory.name}` : "123";
   const menuStep = choosingSize ? "size" : choosingShape ? "shape" : selectionComplete ? "complete" : selectedCategory ? "service" : "category";
 
+  useEffect(() => {
+    if (!selectionComplete) return;
+
+    const timer = window.setTimeout(() => setShowCart(true), 850);
+    return () => window.clearTimeout(timer);
+  }, [selectionComplete]);
+
   const goBack = () => {
+    setShowCart(false);
     if (selectionComplete) {
       if (needsShape) setSelectedShape(null);
       else if (needsSize) setSelectedSize(null);
@@ -148,14 +160,11 @@ export default function ServiceSelector() {
               <span>{String(index + 1).padStart(2, "0")}</span><strong>{shape.name}</strong><b>→</b>
             </button>)}
           </>}
-          {selectionComplete && <>
-            <button className={styles.back} type="button" onClick={goBack}>← Back</button>
-            <div className={styles.selectionSummary}><p>Selection complete.</p></div>
-          </>}
+          {selectionComplete && <div className={styles.selectionSummary} aria-hidden="true" />}
         </div>
       </>}
     </div>}
-    {expanded && selectedCategory && <aside className={styles.selectionTrail} aria-label="Current selection">
+    {expanded && selectedCategory && <aside className={`${styles.selectionTrail} ${showCart ? styles.selectionComplete : selectionComplete ? styles.selectionLeaving : ""}`} aria-label="Current selection">
       <p>Your selection</p>
       <ol>
         <li><span>Category</span><strong>{selectedCategory.name}</strong></li>
@@ -163,6 +172,10 @@ export default function ServiceSelector() {
         {selectedSize && <li><span>Length</span><strong>{selectedSize.name}</strong></li>}
         {selectedShape && <li><span>Shape</span><strong>{selectedShape.name}</strong></li>}
       </ol>
+      {showCart && <div className={styles.cartActions}>
+        <p>Selection complete</p>
+        <button type="button" onClick={goBack}>Edit selection</button>
+      </div>}
     </aside>}
     {expanded && <p className={styles.helper}>{choosingSize ? "Select a nail length." : choosingShape ? "Select a nail shape." : selectionComplete ? "Your service is selected." : selectedCategory ? "Choose a service to continue." : "Choose a service category to see its options."}</p>}
   </section>;
