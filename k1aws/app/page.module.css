@@ -203,7 +203,7 @@
   width: max-content;
 }
 .finishServices {
-  grid-column: 1 / -1;
+  min-width: 0;
 }
 .finishImage {
   min-height: 520px;
@@ -323,7 +323,6 @@
   }
   .finishImage {
     min-height: 380px;
-    order: -1;
   }
   .finishCopy {
     min-height: 500px;

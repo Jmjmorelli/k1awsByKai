@@ -37,12 +37,9 @@ export default function Home() {
         </section>
 
         <section className={styles.finish} id="studio">
-            <div className={styles.finishCopy}><p className={styles.label}></p><ParallaxText
-                className={styles.parallaxTitle}><h2>some inspirational<br/>text</h2></ParallaxText><p>A little bit about me... CHudington Supreme</p><Link href="/booking">Book
-                an appointment <b></b></Link></div>
-            <div ><Image src={mark} alt="K1aws by Kai"
-                                                       sizes="(max-width: 700px) 100vw, 50vw"/></div>
             <div className={styles.finishServices} id="services"><ServiceSelector/></div>
+            <div><Image src={mark} alt="K1aws by Kai"
+                                                       sizes="(max-width: 700px) 100vw, 50vw"/></div>
         </section>
 
         <footer><span>K1AWS BY KAI — ORLANDO, FL</span><a href="#home">BACK TO TOP ↑</a><span>© 2026</span></footer>
