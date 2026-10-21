@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "K1aws by Kai | Orlando Nail Artist",
-  description: "Custom Gel X, hard gel, soft gel, and gel polish sets by Kailen.",
+  title: "K1aws by Kai | ",
+  description: "Custom Gel X, hard gel and gel polish sets by Kailen.",
 };
 
 export default function RootLayout({

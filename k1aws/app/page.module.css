@@ -12,13 +12,6 @@
   overflow: hidden;
   position: relative;
 }
-.hero:before {
-  background: linear-gradient(90deg, transparent 50%, rgb(0 0 0/0.04) 50%);
-  content: "";
-  inset: 0;
-  pointer-events: none;
-  position: absolute;
-}
 .hero h1 {
   bottom: clamp(4.5rem, 9vh, 7rem);
   font:
@@ -117,49 +110,19 @@
 }
 .collectionVisual {
   aspect-ratio: 0.82;
+  background: #e7e1dc;
   overflow: hidden;
   position: relative;
 }
-.collectionVisual span {
-  font:
-    600 0.65rem Arial,
-    sans-serif;
-  left: 1rem;
-  letter-spacing: 0.1em;
-  position: absolute;
-  top: 1rem;
-  z-index: 2;
-}
 .collectionVisual i {
+  background: #d0a7a2;
   border-radius: 50% 50% 45% 45%;
-  bottom: -9%;
-  height: 91%;
-  left: 17%;
+  height: 74%;
+  left: 26%;
   position: absolute;
-  transform: rotate(20deg);
-  width: 66%;
-}
-.visual1 {
-  background: #d0d1cc;
-}
-.visual1 i {
-  background: linear-gradient(130deg, #f4c6d5, #d68ba4 80%);
-  box-shadow: 25px -8px 30px rgb(255 255 255/0.7) inset;
-}
-.visual2 {
-  background: #292b2b;
-  color: #eee;
-}
-.visual2 i {
-  background: linear-gradient(130deg, #d9e2df, #717b78 65%, #e7ece8);
-  box-shadow: 20px -8px 30px rgb(255 255 255/0.6) inset;
-}
-.visual3 {
-  background: #ddb0bd;
-}
-.visual3 i {
-  background: linear-gradient(130deg, #f4e9e2, #d08798 70%);
-  box-shadow: 20px -8px 30px rgb(255 255 255/0.7) inset;
+  top: 13%;
+  transform: rotate(18deg);
+  width: 48%;
 }
 .collection h3 {
   font:
@@ -198,8 +161,8 @@
   margin-left: 0.7rem;
 }
 .finish {
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--paper);
+  color: var(--ink);
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   min-height: 82svh;
@@ -235,9 +198,12 @@
   max-width: 24rem;
 }
 .finish a {
-  color: var(--paper);
+  color: var(--ink);
   margin-top: auto;
   width: max-content;
+}
+.finishServices {
+  grid-column: 1 / -1;
 }
 .finishImage {
   min-height: 520px;

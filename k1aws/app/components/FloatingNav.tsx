@@ -36,8 +36,8 @@ export default function FloatingNav() {
         <nav aria-label="Site menu">
           <a href="#home" onClick={closeMenu}>Home</a><a href="#collections" onClick={closeMenu}>Collections</a><a href="#studio" onClick={closeMenu}>The studio</a><a href="#services" onClick={closeMenu}>Services</a><Link href="/booking" onClick={closeMenu}>Book now</Link>
         </nav>
-        <div className={styles.menuFooter}><span>ORLANDO, FL</span><span>INSTAGRAM</span><span>© 2026 K1AWS</span></div>
-        <strong aria-hidden="true">K1AWS.</strong>
+        <div className={styles.menuFooter}><span>ORLANDO, FL</span><a href="https://www.instagram.com/kailenks/"><span>INSTAGRAM</span></a><span>© 2026 K1AWS</span></div>
+        <strong aria-hidden="true">K1AWS</strong>
       </aside>
     </>
   );
