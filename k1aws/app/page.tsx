@@ -39,7 +39,7 @@ export default function Home() {
         <section className={styles.finish} id="studio">
             <div className={styles.finishServices} id="services"><ServiceSelector/></div>
             <div><Image src={mark} alt="K1aws by Kai"
-                                                       sizes="(max-width: 700px) 100vw, 50vw"/></div>
+                        sizes="(max-width: 700px) 100vw, 50vw"/></div>
         </section>
 
         <footer><span>K1AWS BY KAI — ORLANDO, FL</span><a href="#home">BACK TO TOP ↑</a><span>© 2026</span></footer>

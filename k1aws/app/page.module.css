@@ -208,6 +208,14 @@
 .finishImage {
   min-height: 520px;
   overflow: hidden;
+  position: relative;
+}
+.finishImage:after {
+  background: linear-gradient(90deg, transparent 55%, var(--paper));
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
 }
 .finishImage img {
   filter: grayscale(1) contrast(1.1);

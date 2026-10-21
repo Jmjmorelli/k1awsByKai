@@ -1,7 +1,7 @@
 .experience {
   background: #ececea;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   min-height: 68svh;
   padding: clamp(4rem, 8vw, 8rem) clamp(1.25rem, 8vw, 9rem);
   position: relative;
@@ -9,28 +9,33 @@
 }
 .title {
   align-self: start;
+  display: flex;
+  flex-direction: column;
   transition:
     opacity 0.45s ease,
     transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .title p {
   font:
-    600 0.63rem Arial,
+    400 clamp(1.35rem, 2.2vw, 2.15rem)/0.95 Arial,
     sans-serif;
-  letter-spacing: 0.14em;
-  margin: 0;
-  text-transform: uppercase;
+  letter-spacing: -0.04em;
+  margin: 2rem 0 0;
+  max-width: 11rem;
+  order: 1;
 }
 .title h2 {
   font:
     400 clamp(3.4rem, 6vw, 7rem)/0.83 Arial,
     sans-serif;
   letter-spacing: -0.065em;
-  margin: 3rem 0 0;
+  margin: 0;
+  order: 0;
 }
 .entry {
-  align-self: start;
   border-top: 1px solid rgb(21 21 21/0.35);
+  margin-top: clamp(2.5rem, 6vw, 5rem);
+  width: 100%;
 }
 .entry button {
   align-items: center;

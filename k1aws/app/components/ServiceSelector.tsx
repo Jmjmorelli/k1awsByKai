@@ -127,7 +127,8 @@ export default function ServiceSelector() {
   return <section className={`${styles.experience} ${expanded ? styles.expanded : ""}`} aria-label="The essentials">
     <button className={styles.close} type="button" onClick={close} aria-label="Close essentials">Close <span>×</span></button>
     <div className={styles.title}>
-      <h2>MY<br />SERVICES</h2></div>
+      <p>Gel-X · Gel overlays · Custom sizes · Detailed designs</p>
+      <h2><br />K1aws Menu</h2></div>
 
     {!expanded && <div className={styles.entry}>
       <button type="button" onClick={open} aria-expanded="false">BOOK NOW<span></span></button>
