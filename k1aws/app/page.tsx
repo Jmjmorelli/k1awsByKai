@@ -5,7 +5,7 @@ import ParallaxText from "./components/ParallaxText";
 import ServiceSelector from "./components/ServiceSelector";
 import styles from "./page.module.css";
 
-import mark from "../public/kailenPfp.png";
+import kailenPfp from "../public/kailenPfp.png";
 
 const collections = [
     ["THE KLASSIC", "Frenchies, polish-only designs, or 3D on 1 nail per hand"],
@@ -26,6 +26,12 @@ export default function Home() {
             <p className={styles.heroDescriptor}>Instagram</p>
         </section>
 
+        <section className={styles.about} id="about">
+            <div className={styles.aboutCopy}><span>"Don't pick a boring design"</span></div>
+            <div className={styles.aboutImage}><Image src={kailenPfp} alt="Kailen, founder of K1aws by Kai"
+                                                       sizes="(max-width: 100px) 50vw, 50vw"/></div>
+        </section>
+
         <section className={styles.collections} id="collections">
             <div className={styles.titleRow}><ParallaxText className={styles.parallaxTitle}><h2>COLLECTIONS</h2>
             </ParallaxText><p><br/>.</p></div>
@@ -38,8 +44,6 @@ export default function Home() {
 
         <section className={styles.finish} id="studio">
             <div className={styles.finishServices} id="services"><ServiceSelector/></div>
-            <div><Image src={mark} alt="K1aws by Kai"
-                        sizes="(max-width: 700px) 100vw, 50vw"/></div>
         </section>
 
         <footer><span>K1AWS BY KAI — ORLANDO, FL</span><a href="#home">BACK TO TOP ↑</a><span>© 2026</span></footer>

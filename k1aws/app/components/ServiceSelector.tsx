@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./ServiceSelector.module.css";
 
 type Service = { id: number; name: string; basePrice: number; baseDurationMinutes: number; description: string | null };
@@ -11,6 +11,16 @@ type ServiceOptions = { sizes: CatalogOption[]; shapes: CatalogOption[] };
 
 const catalogUrl = "/api/service-catalog";
 const optionsUrl = "/api/service-options";
+const menuHighlights = [
+  ["Gel-X", "Lightweight extensions tailored to your preferred length and shape."],
+  ["Gel Overlays", "Structured support over your natural nails for a polished, lasting finish."],
+  ["Custom Sizes", "Every set is fitted thoughtfully, so your nails feel as good as they look."],
+  ["Detailed Designs", "Frenchies, 3D details, charms, and art that make the set yours."],
+];
+const existingLengthOptions: CatalogOption[] = [
+  { id: -1, name: "Keep my nail length", displayOrder: 0 },
+  { id: -2, name: "Shorten my nail length", displayOrder: 1 },
+];
 
 export default function ServiceSelector() {
   const [catalog, setCatalog] = useState<ServiceCatalog | null>(null);
@@ -57,11 +67,16 @@ export default function ServiceSelector() {
     if (revealTimer.current !== null) window.clearTimeout(revealTimer.current);
   }, []);
 
-  const open = () => {
+  const open = useCallback(() => {
     setExpanded(true);
     setMenuVisible(false);
     revealTimer.current = window.setTimeout(() => setMenuVisible(true), 320);
-  };
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("k1aws:open-booking", open);
+    return () => window.removeEventListener("k1aws:open-booking", open);
+  }, [open]);
 
   const close = () => {
     if (revealTimer.current !== null) window.clearTimeout(revealTimer.current);
@@ -89,12 +104,14 @@ export default function ServiceSelector() {
     setSelectedShape(null);
   };
 
+  const isGelX = selectedCategory?.name === "Gel X";
+  const isGelXFullSet = selectedService?.name === "Gel X Full Set";
+  const usesExistingLength = Boolean(isGelX && selectedService && !isGelXFullSet);
   const needsSize = Boolean(selectedCategory?.requiresSize);
-  const needsShape = Boolean(selectedCategory?.requiresShape);
+  const needsShape = Boolean(selectedCategory?.requiresShape && !usesExistingLength);
   const choosingSize = Boolean(selectedService && needsSize && !selectedSize);
   const choosingShape = Boolean(selectedService && needsShape && (!needsSize || selectedSize) && !selectedShape);
   const selectionComplete = Boolean(selectedService && !choosingSize && !choosingShape);
-  const title = choosingSize ? "Choose your length" : choosingShape ? "Choose your shape" : selectionComplete ? "Your selection" : selectedCategory ? `Services / ${selectedCategory.name}` : "123";
   const menuStep = choosingSize ? "size" : choosingShape ? "shape" : selectionComplete ? "complete" : selectedCategory ? "service" : "category";
 
   useEffect(() => {
@@ -127,12 +144,22 @@ export default function ServiceSelector() {
   return <section className={`${styles.experience} ${expanded ? styles.expanded : ""}`} aria-label="The essentials">
     <button className={styles.close} type="button" onClick={close} aria-label="Close essentials">Close <span>×</span></button>
     <div className={styles.title}>
-      <p>Gel-X · Gel overlays · Custom sizes · Detailed designs</p>
-      <h2><br />K1aws Menu</h2></div>
+      <p>Gel-X ·</p>
+      <p>Gel overlays · </p>
+      <p>Custom sizes · </p>
+      <p>Detailed designs ·</p>
+      <h2>The<br />K1aws Menu</h2></div>
 
-    {!expanded && <div className={styles.entry}>
-      <button type="button" onClick={open} aria-expanded="false">BOOK NOW<span></span></button>
-    </div>}
+
+    {!expanded && <>
+      <div className={styles.menuHighlights}>{menuHighlights.map(([title, description]) => <article className={styles.menuItem} key={title}>
+        <div className={styles.menuCopy}><h3>{title}</h3><p>{description}</p></div>
+        <div className={styles.menuVisual} aria-label={`${title} image placeholder`} role="img"><i/><i/><i/></div>
+      </article>)}</div>
+      <div className={styles.entry}>
+        <button type="button" onClick={open} aria-expanded="false">BOOK NOW<span></span></button>
+      </div>
+    </>}
 
     {expanded && <div className={`${styles.options} ${menuVisible ? styles.menuVisible : ""} ${selectedCategory ? styles.showingServices : ""}`} aria-live="polite">
       {menuVisible && <>
@@ -144,13 +171,13 @@ export default function ServiceSelector() {
           </button>)}
           {selectedCategory && !selectedService && <>
             <button className={styles.back} type="button" onClick={goBack}>Back to categories</button>
-            {selectedCategory.services.map((service) => <button className={styles.service} key={service.id} type="button" onClick={() => chooseService(service)}>
+            {selectedCategory.services.filter((service) => !(selectedCategory.name === "Gel X" && service.name === "Length Change")).map((service) => <button className={styles.service} key={service.id} type="button" onClick={() => chooseService(service)}>
               <strong>{service.name}</strong><small>{service.description ?? `${service.baseDurationMinutes} minutes`}</small><b className={styles.price}>${service.basePrice}</b>
             </button>)}
           </>}
           {choosingSize && <>
             <button className={styles.back} type="button" onClick={goBack}>Back to services</button>
-            {[...(options?.sizes ?? [])].sort((a, b) => a.displayOrder - b.displayOrder).map((size) => <button className={styles.service} key={size.id} type="button" onClick={() => setSelectedSize(size)}>
+            {[...(usesExistingLength ? existingLengthOptions : options?.sizes ?? [])].sort((a, b) => a.displayOrder - b.displayOrder).map((size) => <button className={styles.service} key={size.id} type="button" onClick={() => setSelectedSize(size)}>
               <strong>{size.name}</strong><b>→</b>
             </button>)}
           </>}
@@ -177,6 +204,6 @@ export default function ServiceSelector() {
         <button type="button" onClick={goBack}>Edit selection</button>
       </div>}
     </aside>}
-    {expanded && <p className={styles.helper}>{choosingSize ? "Select a nail length." : choosingShape ? "Select a nail shape." : selectionComplete ? "Your service is selected." : selectedCategory ? "Choose a service to continue." : "Choose a service category to see its options."}</p>}
+    {expanded && <p className={styles.helper}>{choosingSize ? usesExistingLength ? "Keep your current length or shorten it." : "Select a nail length." : choosingShape ? "Select a nail shape." : selectionComplete ? "Your service is selected." : selectedCategory ? "Choose a service to continue." : "Choose a service category to see its options."}</p>}
   </section>;
 }

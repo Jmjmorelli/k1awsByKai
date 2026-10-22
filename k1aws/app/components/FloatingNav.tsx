@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import styles from "./FloatingNav.module.css";
 
@@ -23,6 +22,10 @@ export default function FloatingNav() {
   }, []);
 
   const closeMenu = () => setOpen(false);
+  const openBooking = () => {
+    window.dispatchEvent(new Event("k1aws:open-booking"));
+    closeMenu();
+  };
 
   return (
     <>
@@ -34,7 +37,7 @@ export default function FloatingNav() {
       </header>
       <aside className={`${styles.menu} ${open ? styles.open : ""}`} id="site-menu" aria-hidden={!open}>
         <nav aria-label="Site menu">
-          <a href="#home" onClick={closeMenu}>Home</a><a href="#collections" onClick={closeMenu}>Collections</a><a href="#studio" onClick={closeMenu}>The studio</a><a href="#services" onClick={closeMenu}>Services</a><Link href="/booking" onClick={closeMenu}>Book now</Link>
+          <a href="#home" onClick={closeMenu}>Home</a><a href="#collections" onClick={closeMenu}>Collections</a><a href="#about" onClick={closeMenu}>About Me</a><a href="#services" onClick={closeMenu}>Services</a><a href="#services" onClick={openBooking}>Book now</a>
         </nav>
         <div className={styles.menuFooter}><span>ORLANDO, FL</span><a href="https://www.instagram.com/kailenks/"><span>INSTAGRAM</span></a><span>© 2026 K1AWS</span></div>
         <strong aria-hidden="true">K1AWS</strong>

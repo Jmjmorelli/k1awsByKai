@@ -76,6 +76,43 @@
   font-size: 1rem;
   margin-left: 0.65rem;
 }
+.about {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  min-height: 78svh;
+}
+.aboutCopy {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(3rem, 8vw, 8rem);
+}
+.aboutCopy > p {
+  font: 600 0.63rem Arial, sans-serif;
+  letter-spacing: 0.14em;
+  margin: 0 0 2rem;
+}
+.aboutCopy h2 {
+  font: 400 clamp(3.4rem, 6vw, 7rem)/0.83 Arial, sans-serif;
+  letter-spacing: -0.065em;
+  margin: 0;
+}
+.aboutCopy > span {
+  font: 400 clamp(1.25rem, 2vw, 1.85rem)/1.05 Arial, sans-serif;
+  letter-spacing: -0.04em;
+  margin-top: 2rem;
+  max-width: 21rem;
+}
+.aboutImage {
+  min-height: 520px;
+  overflow: hidden;
+}
+.aboutImage img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
 .collections {
   padding: clamp(4rem, 8vw, 8rem) clamp(1.25rem, 3.5vw, 3.5rem);
 }
@@ -163,9 +200,8 @@
 .finish {
   background: var(--paper);
   color: var(--ink);
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  min-height: 82svh;
+  margin-top: clamp(2rem, 5vw, 5rem);
+  min-height: 0;
 }
 .finishCopy {
   display: flex;
@@ -322,12 +358,18 @@
     text-align: left;
   }
   .collectionGrid,
+  .about,
   .finish,
   .services {
     grid-template-columns: 1fr;
   }
   .collectionGrid {
     gap: 3rem;
+  }
+  .aboutImage {
+    justify-self: center;
+    min-height: 300px;
+    width: min(70vw, 280px);
   }
   .finishImage {
     min-height: 380px;
