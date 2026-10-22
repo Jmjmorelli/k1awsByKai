@@ -1,7 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import styles from "./ServiceSelector.module.css";
+
+import gelOverlay1 from "../../public/gelOverlay1.png";
 
 type Service = { id: number; name: string; basePrice: number; baseDurationMinutes: number; description: string | null };
 type Category = { id: number; name: string; description: string | null; requiresSize: boolean; requiresShape: boolean; services: Service[] };
@@ -154,7 +157,7 @@ export default function ServiceSelector() {
     {!expanded && <>
       <div className={styles.menuHighlights}>{menuHighlights.map(([title, description]) => <article className={styles.menuItem} key={title}>
         <div className={styles.menuCopy}><h3>{title}</h3><p>{description}</p></div>
-        <div className={styles.menuVisual} aria-label={`${title} image placeholder`} role="img"><i/><i/><i/></div>
+        <div className={styles.menuVisual}>{title === "Gel Overlays" ? <Image src={gelOverlay1} alt="Gel overlay nails" sizes="(max-width: 700px) 100vw, 50vw"/> : <><i/><i/><i/></>}</div>
       </article>)}</div>
       <div className={styles.entry}>
         <button type="button" onClick={open} aria-expanded="false">BOOK NOW<span></span></button>

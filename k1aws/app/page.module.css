@@ -161,6 +161,11 @@
   transform: rotate(18deg);
   width: 48%;
 }
+.collectionVisual img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
 .collection h3 {
   font:
     400 clamp(1.8rem, 3vw, 3.3rem)/0.9 Arial,

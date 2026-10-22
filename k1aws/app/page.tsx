@@ -5,12 +5,13 @@ import ParallaxText from "./components/ParallaxText";
 import ServiceSelector from "./components/ServiceSelector";
 import styles from "./page.module.css";
 
+import gelX1 from "../public/gelX1.png";
 import kailenPfp from "../public/kailenPfp.png";
 
 const collections = [
-    ["THE KLASSIC", "Frenchies, polish-only designs, or 3D on 1 nail per hand"],
-    ["THE KUSTOM", "3D on 2-3 nails per hand, polish designs, and charms"],
-    ["THE KHROME", "3D on 4-5 nails per hand, polish designs, and charms"],
+    { title: "THE KLASSIC", description: "Frenchies, polish-only designs, or 3D on 1 nail per hand", image: gelX1, imageAlt: "Gel-X nail set" },
+    { title: "THE KUSTOM", description: "3D on 2-3 nails per hand, polish designs, and charms" },
+    { title: "THE KHROME", description: "3D on 4-5 nails per hand, polish designs, and charms" },
 ];
 
 export default function Home() {
@@ -35,9 +36,9 @@ export default function Home() {
         <section className={styles.collections} id="collections">
             <div className={styles.titleRow}><ParallaxText className={styles.parallaxTitle}><h2>COLLECTIONS</h2>
             </ParallaxText><p><br/>.</p></div>
-            <div className={styles.collectionGrid}>{collections.map(([title, description]) => <article
+            <div className={styles.collectionGrid}>{collections.map(({ title, description, image, imageAlt }) => <article
                 className={styles.collection} key={title}>
-                <div className={styles.collectionVisual} aria-hidden="true"><i/>
+                <div className={styles.collectionVisual}>{image ? <Image src={image} alt={imageAlt ?? ""} sizes="(max-width: 700px) 100vw, 33vw"/> : <i aria-hidden="true"/>}
                 </div>
                 <h3>{title}</h3><p>{description}</p><Link href="/booking">Explore <b></b></Link></article>)}</div>
         </section>

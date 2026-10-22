@@ -83,6 +83,11 @@
   background: #4c4a4b;
   transform: translateY(9%) rotate(26deg);
 }
+.menuVisual img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
 .menuItem:nth-child(2) .menuVisual {
   background: #b9c1be;
 }
