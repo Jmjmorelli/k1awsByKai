@@ -30,7 +30,7 @@ export default function Home() {
         <section className={styles.about} id="about">
             <div className={styles.aboutCopy}><span>"Don't pick a boring design"</span></div>
             <div className={styles.aboutImage}><Image src={kailenPfp} alt="Kailen, founder of K1aws by Kai"
-                                                       sizes="(max-width: 100px) 50vw, 50vw"/></div>
+                                                       sizes="(max-width: 100px) 50vw, 50vw" quality={100}/></div>
         </section>
 
         <section className={styles.collections} id="collections">
@@ -38,7 +38,7 @@ export default function Home() {
             </ParallaxText><p><br/>.</p></div>
             <div className={styles.collectionGrid}>{collections.map(({ title, description, image, imageAlt }) => <article
                 className={styles.collection} key={title}>
-                <div className={styles.collectionVisual}>{image ? <Image src={image} alt={imageAlt ?? ""} sizes="(max-width: 700px) 100vw, 33vw"/> : <i aria-hidden="true"/>}
+                <div className={styles.collectionVisual}>{image ? <Image src={image} alt={imageAlt ?? ""} sizes="(max-width: 700px) 100vw, 33vw" quality={100}/> : <i aria-hidden="true"/>}
                 </div>
                 <h3>{title}</h3><p>{description}</p><Link href="/booking">Explore <b></b></Link></article>)}</div>
         </section>

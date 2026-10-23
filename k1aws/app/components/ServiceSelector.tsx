@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import styles from "./ServiceSelector.module.css";
 
+import gelX1 from "../../public/gelX1.png";
 import gelOverlay1 from "../../public/gelOverlay1.png";
 
 type Service = { id: number; name: string; basePrice: number; baseDurationMinutes: number; description: string | null };
@@ -155,10 +156,16 @@ export default function ServiceSelector() {
 
 
     {!expanded && <>
-      <div className={styles.menuHighlights}>{menuHighlights.map(([title, description]) => <article className={styles.menuItem} key={title}>
-        <div className={styles.menuCopy}><h3>{title}</h3><p>{description}</p></div>
-        <div className={styles.menuVisual}>{title === "Gel Overlays" ? <Image src={gelOverlay1} alt="Gel overlay nails" sizes="(max-width: 700px) 100vw, 50vw"/> : <><i/><i/><i/></>}</div>
-      </article>)}</div>
+      <div className={styles.menuHighlights}>{menuHighlights.map(([title, description]) => {
+        const image = title === "Gel-X" ? gelX1 : title === "Gel Overlays" ? gelOverlay1 : null;
+        return <article className={styles.menuItem} key={title}>
+          <div className={styles.menuCopy}><h3>{title}</h3><p>{description}</p></div>
+          <div className={styles.menuVisual}>
+            {image && <Image className={styles.menuPhoto} src={image} alt={`${title} nail set`} sizes="(max-width: 700px) 42vw, 18vw" quality={100}/>}
+            {Array.from({ length: image ? 2 : 3 }, (_, index) => <i className={styles.menuPlaceholder} key={index} aria-hidden="true" />)}
+          </div>
+        </article>;
+      })}</div>
       <div className={styles.entry}>
         <button type="button" onClick={open} aria-expanded="false">BOOK NOW<span></span></button>
       </div>
