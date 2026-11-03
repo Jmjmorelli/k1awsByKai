@@ -181,7 +181,7 @@
   margin: 0;
   max-width: 14rem;
 }
-.collection a,
+.collectionExplore,
 .finish a,
 .serviceRows > a,
 .cta a {
@@ -195,7 +195,13 @@
   text-decoration: none;
   text-transform: uppercase;
 }
-.collection b,
+.collectionExplore {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+}
+.collectionExplore b,
 .finish b,
 .serviceRows b,
 .cta b {

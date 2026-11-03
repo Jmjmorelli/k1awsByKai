@@ -59,37 +59,6 @@
   margin: 0;
   max-width: 18rem;
 }
-.collectionDetails {
-  border-top: 1px solid rgb(21 21 21 / 0.25);
-  margin-top: 1.5rem;
-  max-width: 23rem;
-  padding-top: 1rem;
-  text-align: left;
-  width: 100%;
-}
-.collectionDetails > span {
-  font: 600 0.6rem Arial, sans-serif;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-}
-.collectionDetails dl {
-  display: grid;
-  gap: 0.75rem;
-  margin: 0.85rem 0 0;
-}
-.collectionDetails dl div {
-  display: grid;
-  gap: 0.15rem;
-}
-.collectionDetails dt {
-  font: 600 0.68rem Arial, sans-serif;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-.collectionDetails dd {
-  font: 1rem/1.1 garamondFont, serif;
-  margin: 0;
-}
 .menuVisual {
   background: #d7c5bd;
   isolation: isolate;

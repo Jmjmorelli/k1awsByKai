@@ -7,8 +7,9 @@ import styles from "./ServiceSelector.module.css";
 type Service = { id: number; name: string; basePrice: number; baseDurationMinutes: number; description: string | null };
 type Category = { id: number; name: string; description: string | null; requiresSize: boolean; requiresShape: boolean; services: Service[] };
 type CatalogOption = { id: number; name: string; displayOrder: number };
+type Tier = { id: number; name: string; additionalPrice: number; additionalDurationMinutes: number; description: string | null; displayOrder: number };
 type ServiceCatalog = { categories: Category[] };
-type ServiceOptions = { sizes: CatalogOption[]; shapes: CatalogOption[] };
+type ServiceOptions = { sizes: CatalogOption[]; shapes: CatalogOption[]; tiers: Tier[] };
 type CheckoutResponse = { url?: string; message?: string };
 
 const catalogUrl = "/api/service-catalog";
@@ -16,7 +17,6 @@ const optionsUrl = "/api/service-options";
 const menuHighlights = [
   ["Gel-X", "Lightweight extensions tailored to your preferred length and shape."],
   ["Gel Overlays", "Structured support over your natural nails for a polished, lasting finish."],
-  ["Custom Sizes", "Every set is fitted thoughtfully, so your nails feel as good as they look."],
   ["Detailed Designs", "Frenchies, 3D details, charms, and art that make the set yours."],
 ];
 const galleryImagesByTitle: Record<string, GalleryImage[]> = {
@@ -28,11 +28,6 @@ const galleryImagesByTitle: Record<string, GalleryImage[]> = {
     { src: "/Gel Overlay/gelOverlay1.png", alt: "Gel overlay nail set" },
   ],
 };
-const collectionDetails = [
-  ["The Klassic", "Frenchies, polish-only designs, or 3D on one nail per hand."],
-  ["The Kustom", "3D on two to three nails per hand, polish designs, and charms."],
-  ["The Khrome", "3D on four to five nails per hand, polish designs, and charms."],
-];
 const existingLengthOptions: CatalogOption[] = [
   { id: -1, name: "Keep my nail length", displayOrder: 0 },
   { id: -2, name: "Shorten my nail length", displayOrder: 1 },
@@ -47,6 +42,8 @@ export default function ServiceSelector() {
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [selectedSize, setSelectedSize] = useState<CatalogOption | null>(null);
   const [selectedShape, setSelectedShape] = useState<CatalogOption | null>(null);
+  const [selectedTier, setSelectedTier] = useState<Tier | null>(null);
+  const [pendingTierName, setPendingTierName] = useState<string | null>(null);
   const [showCart, setShowCart] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
@@ -91,10 +88,50 @@ export default function ServiceSelector() {
     revealTimer.current = window.setTimeout(() => setMenuVisible(true), 320);
   }, []);
 
+  const selectCollectionTier = useCallback((tierName: string) => {
+    open();
+    if (!catalog || !options) {
+      setPendingTierName(tierName);
+      return;
+    }
+
+    const gelXCategory = catalog.categories.find((category) => category.name === "Gel X");
+    const gelXFullSet = gelXCategory?.services.find((service) => service.name === "Gel X Full Set");
+    const tier = options.tiers.find((option) => option.name === tierName);
+
+    if (!gelXCategory || !gelXFullSet || !tier) {
+      setError("This collection is unavailable right now. Please select a service manually.");
+      return;
+    }
+
+    setError(null);
+    setCheckoutError(null);
+    setSelectedCategory(gelXCategory);
+    setSelectedService(gelXFullSet);
+    setSelectedSize(null);
+    setSelectedShape(null);
+    setSelectedTier(tier);
+    setPendingTierName(null);
+  }, [catalog, open, options]);
+
   useEffect(() => {
     window.addEventListener("k1aws:open-booking", open);
     return () => window.removeEventListener("k1aws:open-booking", open);
   }, [open]);
+
+  useEffect(() => {
+    const handleTierSelection = (event: Event) => {
+      const tierName = (event as CustomEvent<{ tierName?: string }>).detail?.tierName;
+      if (tierName) selectCollectionTier(tierName);
+    };
+
+    window.addEventListener("k1aws:select-tier", handleTierSelection);
+    return () => window.removeEventListener("k1aws:select-tier", handleTierSelection);
+  }, [selectCollectionTier]);
+
+  useEffect(() => {
+    if (pendingTierName && catalog && options) selectCollectionTier(pendingTierName);
+  }, [catalog, options, pendingTierName, selectCollectionTier]);
 
   const close = () => {
     if (revealTimer.current !== null) window.clearTimeout(revealTimer.current);
@@ -104,6 +141,7 @@ export default function ServiceSelector() {
     setSelectedService(null);
     setSelectedSize(null);
     setSelectedShape(null);
+    setSelectedTier(null);
     setShowCart(false);
     setCheckoutError(null);
     setIsCheckingOut(false);
@@ -116,6 +154,7 @@ export default function ServiceSelector() {
     setSelectedService(null);
     setSelectedSize(null);
     setSelectedShape(null);
+    setSelectedTier(null);
   };
 
   const chooseService = (service: Service) => {
@@ -124,6 +163,13 @@ export default function ServiceSelector() {
     setSelectedService(service);
     setSelectedSize(null);
     setSelectedShape(null);
+    setSelectedTier(null);
+  };
+
+  const chooseTier = (tier: Tier) => {
+    setShowCart(false);
+    setCheckoutError(null);
+    setSelectedTier(tier);
   };
 
   const isGelX = selectedCategory?.name === "Gel X";
@@ -133,9 +179,11 @@ export default function ServiceSelector() {
   const needsShape = Boolean(selectedCategory?.requiresShape && !usesExistingLength);
   const choosingSize = Boolean(selectedService && needsSize && !selectedSize);
   const choosingShape = Boolean(selectedService && needsShape && (!needsSize || selectedSize) && !selectedShape);
-  const selectionComplete = Boolean(selectedService && !choosingSize && !choosingShape);
-  const selectionCount = [selectedCategory, selectedService, selectedSize, selectedShape].filter(Boolean).length;
-  const menuStep = choosingSize ? "size" : choosingShape ? "shape" : selectionComplete ? "complete" : selectedCategory ? "service" : "category";
+  const choosingTier = Boolean(selectedService && isGelXFullSet && (!needsSize || selectedSize) && (!needsShape || selectedShape) && !selectedTier);
+  const selectionComplete = Boolean(selectedService && !choosingSize && !choosingShape && !choosingTier);
+  const selectionCount = [selectedCategory, selectedService, selectedSize, selectedShape, selectedTier].filter(Boolean).length;
+  const menuStep = choosingSize ? "size" : choosingShape ? "shape" : choosingTier ? "tier" : selectionComplete ? "complete" : selectedCategory ? "service" : "category";
+  const selectionTotal = (selectedService?.basePrice ?? 0) + (selectedTier?.additionalPrice ?? 0);
 
   useEffect(() => {
     if (!selectionComplete) return;
@@ -148,13 +196,20 @@ export default function ServiceSelector() {
     setShowCart(false);
     setCheckoutError(null);
     if (selectionComplete) {
-      if (needsShape) setSelectedShape(null);
+      if (selectedTier) setSelectedTier(null);
+      else if (needsShape) setSelectedShape(null);
       else if (needsSize) setSelectedSize(null);
       else setSelectedService(null);
       return;
     }
     if (choosingShape) {
       if (needsSize) setSelectedSize(null);
+      else setSelectedService(null);
+      return;
+    }
+    if (choosingTier) {
+      if (needsShape) setSelectedShape(null);
+      else if (needsSize) setSelectedSize(null);
       else setSelectedService(null);
       return;
     }
@@ -165,7 +220,7 @@ export default function ServiceSelector() {
     setSelectedCategory(null);
   };
 
-  const editSelection = (step: "category" | "service" | "size" | "shape") => {
+  const editSelection = (step: "category" | "service" | "size" | "shape" | "tier") => {
     setShowCart(false);
     setCheckoutError(null);
 
@@ -174,20 +229,28 @@ export default function ServiceSelector() {
       setSelectedService(null);
       setSelectedSize(null);
       setSelectedShape(null);
+      setSelectedTier(null);
       return;
     }
     if (step === "service") {
       setSelectedService(null);
       setSelectedSize(null);
       setSelectedShape(null);
+      setSelectedTier(null);
       return;
     }
     if (step === "size") {
       setSelectedSize(null);
       setSelectedShape(null);
+      setSelectedTier(null);
       return;
     }
-    setSelectedShape(null);
+    if (step === "shape") {
+      setSelectedShape(null);
+      setSelectedTier(null);
+      return;
+    }
+    setSelectedTier(null);
   };
 
   const beginCheckout = async () => {
@@ -205,6 +268,7 @@ export default function ServiceSelector() {
           serviceId: selectedService.id,
           sizeId: selectedSize?.id ?? null,
           shapeId: selectedShape?.id ?? null,
+          tierId: selectedTier?.id ?? null,
         }),
       });
       const checkout = await response.json() as CheckoutResponse;
@@ -241,15 +305,6 @@ export default function ServiceSelector() {
           <div className={styles.menuCopy}>
             <h3>{title}</h3>
             <p>{description}</p>
-            {title === "Custom Sizes" && <div className={styles.collectionDetails}>
-              <span>Set styles</span>
-              <dl>
-                {collectionDetails.map(([collectionTitle, collectionDescription]) => <div key={collectionTitle}>
-                  <dt>{collectionTitle}</dt>
-                  <dd>{collectionDescription}</dd>
-                </div>)}
-              </dl>
-            </div>}
           </div>
           <div className={styles.menuVisual}>
             {images ? <GalleryCarousel id={title === "Gel-X" ? "gallery" : undefined} images={images}/> : <i className={styles.menuPlaceholder} aria-hidden="true"/>}
@@ -287,6 +342,12 @@ export default function ServiceSelector() {
               <strong>{shape.name}</strong><b>→</b>
             </button>)}
           </>}
+          {choosingTier && <>
+            <button className={styles.back} type="button" onClick={goBack}>Back to shape</button>
+            {[...(options?.tiers ?? [])].sort((a, b) => a.displayOrder - b.displayOrder).map((tier) => <button className={styles.service} key={tier.id} type="button" onClick={() => chooseTier(tier)}>
+              <strong>{tier.name}</strong><small>{tier.description ?? "Choose this design tier."}</small><b className={styles.price}>+${tier.additionalPrice}</b>
+            </button>)}
+          </>}
           {selectionComplete && <div className={styles.selectionSummary} aria-hidden="true" />}
         </div>
       </>}
@@ -302,15 +363,16 @@ export default function ServiceSelector() {
         {selectedService && <li><button type="button" onClick={() => editSelection("service")}><span>Service</span><strong>{selectedService.name}</strong></button></li>}
         {selectedSize && <li><button type="button" onClick={() => editSelection("size")}><span>Length</span><strong>{selectedSize.name}</strong></button></li>}
         {selectedShape && <li><button type="button" onClick={() => editSelection("shape")}><span>Shape</span><strong>{selectedShape.name}</strong></button></li>}
+        {selectedTier && <li><button type="button" onClick={() => editSelection("tier")}><span>Tier</span><strong>{selectedTier.name}</strong></button></li>}
       </ol>
       {showCart && <div className={styles.cartActions}>
-        <p className={styles.selectionTotal}><span>Starting at</span><strong>${selectedService?.basePrice}</strong></p>
+        <p className={styles.selectionTotal}><span>Starting at</span><strong>${selectionTotal}</strong></p>
         <div className={styles.checkoutActions}>
           <button type="button" onClick={beginCheckout} disabled={isCheckingOut}>{isCheckingOut ? "Redirecting…" : "Continue to secure checkout"}</button>
         </div>
       </div>}
       {checkoutError && <p className={styles.checkoutError} role="alert">{checkoutError}</p>}
     </aside>}
-    {expanded && <p className={styles.helper}>{choosingSize ? usesExistingLength ? "Keep your current length or shorten it." : "Select a nail length." : choosingShape ? "Select a nail shape." : selectionComplete ? "Your service is selected." : selectedCategory ? "Choose a service to continue." : "Choose a service category to see its options."}</p>}
+    {expanded && <p className={styles.helper}>{choosingSize ? usesExistingLength ? "Keep your current length or shorten it." : "Select a nail length." : choosingShape ? "Select a nail shape." : choosingTier ? "Select a design tier." : selectionComplete ? "Your service is selected." : selectedCategory ? "Choose a service to continue." : "Choose a service category to see its options."}</p>}
   </section>;
 }

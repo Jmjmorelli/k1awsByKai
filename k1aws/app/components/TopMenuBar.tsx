@@ -1,4 +1,3 @@
-import Link from "next/link";
 import styles from "./TopMenuBar.module.css";
 
 export default function TopMenuBar() {
@@ -10,7 +9,7 @@ export default function TopMenuBar() {
         <a href="#gallery">Gallery</a>
         <a href="#policies">Policies</a>
       </nav>
-      <Link className={styles.bookLink} href="/booking">Book now <span></span></Link>
+      <a className={styles.bookLink} href="#services">Book now <span></span></a>
     </header>
   );
 }

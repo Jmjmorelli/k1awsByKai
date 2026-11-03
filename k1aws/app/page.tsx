@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import CollectionExploreButton from "./components/CollectionExploreButton";
 import FloatingNav from "./components/FloatingNav";
 import GalleryCarousel, { type GalleryImage } from "./components/GalleryCarousel";
 import ParallaxText from "./components/ParallaxText";
@@ -8,29 +8,33 @@ import styles from "./page.module.css";
 
 import kailenPfp from "../public/kailenPfp.png";
 
-const collections: { title: string; description: string; images: GalleryImage[] }[] = [
+const collections: { title: string; description: string; images?: GalleryImage[]; tierName: string }[] = [
     {
         title: "THE KLASSIC",
-        description: "Frenchies, polish-only designs, or 3D on 1 nail per hand",
-        images: [
-            { src: "/Gel-X/gelX1.png", alt: "Klassic Gel-X nail set" },
-            { src: "/Gel-X/gelX2.jpeg", alt: "Klassic Gel-X nail set" },
-        ],
+        description: "Frenchies or 1 design per hand",
+        tierName: "Tier 1",
     },
     {
-        title: "THE KUSTOM",
-        description: "3D on 2-3 nails per hand, polish designs, and charms",
+        title: "THE KARMA",
+        description: "3D on one finger with simple designs",
+        tierName: "Tier 2",
         images: [
-            { src: "/Gel Overlay/gelOverlay1.png", alt: "Kustom gel overlay nail set" },
+            { src: "/Gel-X/gelX1.png", alt: "Karma nail set" },
         ],
     },
     {
         title: "THE KHROME",
-        description: "3D on 4-5 nails per hand, polish designs, and charms",
+        description: "3D on 2-4 nails per hand, polish designs, chrome, or charms",
+        tierName: "Tier 3",
         images: [
-            { src: "/kiaras.JPG", alt: "Khrome nail set" },
-            { src: "/amerrican.JPG", alt: "Khrome nail set" },
+            { src: "/Gel-X/gelX2.jpeg", alt: "KHROME nail set" },
         ],
+    },
+    {
+        title: "THE KUSTOM",
+        description: "100% customized, different designs on every finger, 3D, chrome, and charms",
+        tierName: "Tier 4",
+
     },
 ];
 
@@ -56,10 +60,10 @@ export default function Home() {
         <section className={styles.collections} id="collections">
             <div className={styles.titleRow}><ParallaxText className={styles.parallaxTitle}><h2>COLLECTIONS</h2>
             </ParallaxText><p><br/>.</p></div>
-            <div className={styles.collectionGrid}>{collections.map(({ title, description, images }) => <article
+            <div className={styles.collectionGrid}>{collections.map(({ title, description, images, tierName }) => <article
                 className={styles.collection} key={title}>
-                <div className={styles.collectionVisual}><GalleryCarousel images={images}/></div>
-                <h3>{title}</h3><p>{description}</p><Link href="/booking">Explore <b></b></Link></article>)}</div>
+                <div className={styles.collectionVisual}>{images ? <GalleryCarousel images={images}/> : <i aria-hidden="true"/>}</div>
+                <h3>{title}</h3><p>{description}</p><CollectionExploreButton className={styles.collectionExplore} tierName={tierName}/></article>)}</div>
         </section>
 
         <section className={styles.finish} id="studio">
