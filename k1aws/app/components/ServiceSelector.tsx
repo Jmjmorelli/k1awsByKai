@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type ChangeEvent } from "react";
 import GalleryCarousel, { type GalleryImage } from "./GalleryCarousel";
 import styles from "./ServiceSelector.module.css";
 
@@ -11,6 +11,7 @@ type Tier = { id: number; name: string; additionalPrice: number; additionalDurat
 type ServiceCatalog = { categories: Category[] };
 type ServiceOptions = { sizes: CatalogOption[]; shapes: CatalogOption[]; tiers: Tier[] };
 type CheckoutResponse = { url?: string; message?: string };
+type ReferencePhoto = { name: string; dataUrl: string };
 
 const catalogUrl = "/api/service-catalog";
 const optionsUrl = "/api/service-options";
@@ -44,6 +45,8 @@ export default function ServiceSelector() {
   const [selectedShape, setSelectedShape] = useState<CatalogOption | null>(null);
   const [selectedTier, setSelectedTier] = useState<Tier | null>(null);
   const [pendingTierName, setPendingTierName] = useState<string | null>(null);
+  const [requests, setRequests] = useState("");
+  const [referencePhoto, setReferencePhoto] = useState<ReferencePhoto | null>(null);
   const [showCart, setShowCart] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
@@ -90,29 +93,28 @@ export default function ServiceSelector() {
 
   const selectCollectionTier = useCallback((tierName: string) => {
     open();
-    if (!catalog || !options) {
+    if (!options) {
       setPendingTierName(tierName);
       return;
     }
 
-    const gelXCategory = catalog.categories.find((category) => category.name === "Gel X");
-    const gelXFullSet = gelXCategory?.services.find((service) => service.name === "Gel X Full Set");
     const tier = options.tiers.find((option) => option.name === tierName);
 
-    if (!gelXCategory || !gelXFullSet || !tier) {
-      setError("This collection is unavailable right now. Please select a service manually.");
+    if (!tier) {
+      setError("This tier is unavailable right now. Please select a tier manually.");
       return;
     }
 
     setError(null);
     setCheckoutError(null);
-    setSelectedCategory(gelXCategory);
-    setSelectedService(gelXFullSet);
+    setShowCart(false);
+    setSelectedCategory(null);
+    setSelectedService(null);
     setSelectedSize(null);
     setSelectedShape(null);
     setSelectedTier(tier);
     setPendingTierName(null);
-  }, [catalog, open, options]);
+  }, [open, options]);
 
   useEffect(() => {
     window.addEventListener("k1aws:open-booking", open);
@@ -130,8 +132,8 @@ export default function ServiceSelector() {
   }, [selectCollectionTier]);
 
   useEffect(() => {
-    if (pendingTierName && catalog && options) selectCollectionTier(pendingTierName);
-  }, [catalog, options, pendingTierName, selectCollectionTier]);
+    if (pendingTierName && options) selectCollectionTier(pendingTierName);
+  }, [options, pendingTierName, selectCollectionTier]);
 
   const close = () => {
     if (revealTimer.current !== null) window.clearTimeout(revealTimer.current);
@@ -142,6 +144,8 @@ export default function ServiceSelector() {
     setSelectedSize(null);
     setSelectedShape(null);
     setSelectedTier(null);
+    setRequests("");
+    setReferencePhoto(null);
     setShowCart(false);
     setCheckoutError(null);
     setIsCheckingOut(false);
@@ -154,7 +158,6 @@ export default function ServiceSelector() {
     setSelectedService(null);
     setSelectedSize(null);
     setSelectedShape(null);
-    setSelectedTier(null);
   };
 
   const chooseService = (service: Service) => {
@@ -163,7 +166,6 @@ export default function ServiceSelector() {
     setSelectedService(service);
     setSelectedSize(null);
     setSelectedShape(null);
-    setSelectedTier(null);
   };
 
   const chooseTier = (tier: Tier) => {
@@ -179,11 +181,12 @@ export default function ServiceSelector() {
   const needsShape = Boolean(selectedCategory?.requiresShape && !usesExistingLength);
   const choosingSize = Boolean(selectedService && needsSize && !selectedSize);
   const choosingShape = Boolean(selectedService && needsShape && (!needsSize || selectedSize) && !selectedShape);
-  const choosingTier = Boolean(selectedService && isGelXFullSet && (!needsSize || selectedSize) && (!needsShape || selectedShape) && !selectedTier);
+  const choosingTier = Boolean(selectedService && (!needsSize || selectedSize) && (!needsShape || selectedShape) && !selectedTier);
   const selectionComplete = Boolean(selectedService && !choosingSize && !choosingShape && !choosingTier);
   const selectionCount = [selectedCategory, selectedService, selectedSize, selectedShape, selectedTier].filter(Boolean).length;
   const menuStep = choosingSize ? "size" : choosingShape ? "shape" : choosingTier ? "tier" : selectionComplete ? "complete" : selectedCategory ? "service" : "category";
   const selectionTotal = (selectedService?.basePrice ?? 0) + (selectedTier?.additionalPrice ?? 0);
+  const estimatedDurationMinutes = (selectedService?.baseDurationMinutes ?? 0) + (selectedTier?.additionalDurationMinutes ?? 0);
 
   useEffect(() => {
     if (!selectionComplete) return;
@@ -229,29 +232,39 @@ export default function ServiceSelector() {
       setSelectedService(null);
       setSelectedSize(null);
       setSelectedShape(null);
-      setSelectedTier(null);
       return;
     }
     if (step === "service") {
       setSelectedService(null);
       setSelectedSize(null);
       setSelectedShape(null);
-      setSelectedTier(null);
       return;
     }
     if (step === "size") {
       setSelectedSize(null);
       setSelectedShape(null);
-      setSelectedTier(null);
       return;
     }
     if (step === "shape") {
       setSelectedShape(null);
-      setSelectedTier(null);
       return;
     }
     setSelectedTier(null);
   };
+
+  const handleReferencePhoto = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) {
+      setReferencePhoto(null);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => setReferencePhoto({ name: file.name, dataUrl: String(reader.result) });
+    reader.readAsDataURL(file);
+  };
+
+  const formatDuration = (minutes: number) => minutes < 60 ? `${minutes} min` : `${Math.floor(minutes / 60)}h${minutes % 60 ? ` ${minutes % 60}m` : ""}`;
 
   const beginCheckout = async () => {
     if (!selectedCategory || !selectedService || isCheckingOut) return;
@@ -269,6 +282,8 @@ export default function ServiceSelector() {
           sizeId: selectedSize?.id ?? null,
           shapeId: selectedShape?.id ?? null,
           tierId: selectedTier?.id ?? null,
+          requests: requests.trim() || null,
+          referencePhoto,
         }),
       });
       const checkout = await response.json() as CheckoutResponse;
@@ -366,7 +381,19 @@ export default function ServiceSelector() {
         {selectedTier && <li><button type="button" onClick={() => editSelection("tier")}><span>Tier</span><strong>{selectedTier.name}</strong></button></li>}
       </ol>
       {showCart && <div className={styles.cartActions}>
-        <p className={styles.selectionTotal}><span>Starting at</span><strong>${selectionTotal}</strong></p>
+        <div className={styles.selectionMeta}>
+          <p className={styles.selectionTotal}><span>Starting at</span><strong>${selectionTotal}</strong></p>
+          <p className={styles.selectionDuration}><span>Estimated duration</span><strong>{formatDuration(estimatedDurationMinutes)}</strong></p>
+        </div>
+        <label className={styles.requestField}>
+          <span>Requests or comments</span>
+          <textarea value={requests} onChange={(event) => setRequests(event.target.value)} placeholder="Add any notes for your appointment" rows={3}/>
+        </label>
+        <label className={styles.referencePhoto}>
+          <span>Reference photo</span>
+          <input type="file" accept="image/*" onChange={handleReferencePhoto}/>
+          <b>{referencePhoto ? referencePhoto.name : "Add photo"}</b>
+        </label>
         <div className={styles.checkoutActions}>
           <button type="button" onClick={beginCheckout} disabled={isCheckingOut}>{isCheckingOut ? "Redirecting…" : "Continue to secure checkout"}</button>
         </div>
