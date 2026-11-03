@@ -59,62 +59,52 @@
   margin: 0;
   max-width: 18rem;
 }
+.collectionDetails {
+  border-top: 1px solid rgb(21 21 21 / 0.25);
+  margin-top: 1.5rem;
+  max-width: 23rem;
+  padding-top: 1rem;
+  text-align: left;
+  width: 100%;
+}
+.collectionDetails > span {
+  font: 600 0.6rem Arial, sans-serif;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+.collectionDetails dl {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0.85rem 0 0;
+}
+.collectionDetails dl div {
+  display: grid;
+  gap: 0.15rem;
+}
+.collectionDetails dt {
+  font: 600 0.68rem Arial, sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.collectionDetails dd {
+  font: 1rem/1.1 garamondFont, serif;
+  margin: 0;
+}
 .menuVisual {
   background: #d7c5bd;
   isolation: isolate;
   overflow: hidden;
   position: relative;
 }
-.menuVisual > * {
-  border: 1px solid rgb(255 255 255 / 0.5);
-  box-shadow: 0 0.7rem 1.8rem rgb(41 28 28 / 0.16);
-  height: clamp(11.25rem, 22.5vw, 20rem);
-  position: absolute;
-  width: clamp(8.25rem, 16vw, 14rem);
-}
-.menuVisual > :nth-child(1) {
-  left: 10%;
-  top: 16%;
-  transform: rotate(-8deg);
-}
-.menuVisual > :nth-child(2) {
-  left: 35%;
-  top: 10%;
-  transform: rotate(4deg);
-  z-index: 1;
-}
-.menuVisual > :nth-child(3) {
-  bottom: 12%;
-  right: 9%;
-  transform: rotate(11deg);
-}
 .menuPlaceholder {
-  background: #a56e72;
-  display: block;
-  overflow: hidden;
-}
-.menuPlaceholder::before {
-  background: rgb(255 255 255 / 0.72);
+  background: rgb(255 255 255 / 0.32);
   border-radius: 50% 50% 42% 42%;
-  content: "";
   height: 62%;
   left: 31%;
   position: absolute;
   top: 20%;
   transform: rotate(16deg);
   width: 38%;
-}
-.menuPlaceholder:nth-of-type(1) {
-  background: #ede1da;
-}
-.menuPlaceholder:nth-of-type(2) {
-  background: #4c4a4b;
-}
-.menuPlaceholder:nth-of-type(3) {
-  background: #a56e72;
-}
-.menuPhoto {
-  object-fit: cover;
 }
 .menuItem:nth-child(2) .menuVisual {
   background: #b9c1be;
@@ -529,6 +519,13 @@
   text-transform: uppercase;
 }
 
+.checkoutActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  justify-content: flex-end;
+}
+
 .cartActions button {
   background: #151515;
   border: 0;
@@ -538,6 +535,23 @@
   letter-spacing: 0.1em;
   padding: 0.8rem 1rem;
   text-transform: uppercase;
+}
+
+.cartActions button:first-child {
+  background: transparent;
+  border: 1px solid rgb(21 21 21 / 0.42);
+  color: #151515;
+}
+
+.cartActions button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.checkoutError {
+  color: #b42318;
+  font: 600 0.75rem/1.4 Arial, sans-serif;
+  margin: 1rem 0 0;
 }
 
 @keyframes selection-list-exit {

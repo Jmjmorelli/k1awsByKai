@@ -1,0 +1,143 @@
+.carousel {
+  height: 100%;
+  isolation: isolate;
+  position: relative;
+  width: 100%;
+}
+
+.imageWrap {
+  background: rgb(255 255 255 / 0.25);
+  border: 0;
+  cursor: zoom-in;
+  height: 100%;
+  inset: 0;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.imageWrap img,
+.fullImageWrap img {
+  animation: fade 0.35s ease;
+  object-fit: contain;
+}
+
+.control {
+  align-items: center;
+  background: rgb(255 255 255 / 0.45);
+  border: 1px solid rgb(255 255 255 / 0.7);
+  border-radius: 50%;
+  color: #151515;
+  cursor: pointer;
+  display: flex;
+  font: 400 1.6rem/1 Arial, sans-serif;
+  height: 3rem;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: background 0.2s ease, transform 0.2s ease;
+  width: 3rem;
+  z-index: 1;
+}
+
+.control:hover,
+.control:focus-visible {
+  background: #ececea;
+  outline: none;
+  transform: translateY(-50%) scale(1.08);
+}
+
+.previous { left: 1rem; }
+.next { right: 1rem; }
+
+.dots {
+  bottom: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  right: 0;
+  z-index: 1;
+}
+
+.dots button {
+  background: rgb(255 255 255 / 0.7);
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  height: 0.45rem;
+  padding: 0;
+  transition: background 0.2s ease, transform 0.2s ease;
+  width: 0.45rem;
+}
+
+.dots button:hover,
+.dots button:focus-visible,
+.dots .activeDot {
+  background: #151515;
+  outline: none;
+  transform: scale(1.25);
+}
+
+.lightbox {
+  align-items: center;
+  background: rgb(21 21 21 / 0.94);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  position: fixed;
+  z-index: 100;
+}
+
+.fullImageWrap {
+  height: min(88svh, 100%);
+  position: relative;
+  width: min(88vw, 100%);
+}
+
+.close {
+  background: none;
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  font: 300 2.5rem/1 Arial, sans-serif;
+  padding: 0.5rem;
+  position: absolute;
+  right: 1.25rem;
+  top: 1.25rem;
+  z-index: 1;
+}
+
+.lightboxControl {
+  background: rgb(255 255 255 / 0.8);
+}
+
+.counter {
+  bottom: 1.5rem;
+  color: #fff;
+  font: 600 0.7rem Arial, sans-serif;
+  left: 0;
+  letter-spacing: 0.12em;
+  margin: 0;
+  position: absolute;
+  right: 0;
+  text-align: center;
+}
+
+@keyframes fade {
+  from { opacity: 0.65; transform: scale(1.015); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@media (max-width: 700px) {
+  .control { height: 2.5rem; width: 2.5rem; }
+  .previous { left: 0.7rem; }
+  .next { right: 0.7rem; }
+  .dots { bottom: 0.7rem; }
+  .lightboxControl { top: auto; bottom: 1.25rem; transform: none; }
+  .lightboxControl:hover,
+  .lightboxControl:focus-visible { transform: scale(1.08); }
+}

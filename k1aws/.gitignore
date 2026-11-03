@@ -40,3 +40,4 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+/.playwright-cli/console-2026-10-18T22-58-25-857Z.log

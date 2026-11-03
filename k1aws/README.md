@@ -20,6 +20,25 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Checkout API
+
+Set `CHECKOUT_URL` to the backend endpoint that creates a Stripe Checkout Session. The frontend sends:
+
+```json
+{
+  "categoryId": 1,
+  "serviceId": 2,
+  "sizeId": 3,
+  "shapeId": 4
+}
+```
+
+`sizeId` and `shapeId` are `null` when they were not selected. The backend must validate this payload and return JSON with a Stripe-hosted Checkout URL:
+
+```json
+{ "url": "https://checkout.stripe.com/..." }
+```
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

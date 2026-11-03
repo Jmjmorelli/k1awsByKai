@@ -1,17 +1,15 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import GalleryCarousel, { type GalleryImage } from "./GalleryCarousel";
 import styles from "./ServiceSelector.module.css";
-
-import gelX1 from "../../public/gelX1.png";
-import gelOverlay1 from "../../public/gelOverlay1.png";
 
 type Service = { id: number; name: string; basePrice: number; baseDurationMinutes: number; description: string | null };
 type Category = { id: number; name: string; description: string | null; requiresSize: boolean; requiresShape: boolean; services: Service[] };
 type CatalogOption = { id: number; name: string; displayOrder: number };
 type ServiceCatalog = { categories: Category[] };
 type ServiceOptions = { sizes: CatalogOption[]; shapes: CatalogOption[] };
+type CheckoutResponse = { url?: string; message?: string };
 
 const catalogUrl = "/api/service-catalog";
 const optionsUrl = "/api/service-options";
@@ -20,6 +18,20 @@ const menuHighlights = [
   ["Gel Overlays", "Structured support over your natural nails for a polished, lasting finish."],
   ["Custom Sizes", "Every set is fitted thoughtfully, so your nails feel as good as they look."],
   ["Detailed Designs", "Frenchies, 3D details, charms, and art that make the set yours."],
+];
+const galleryImagesByTitle: Record<string, GalleryImage[]> = {
+  "Gel-X": [
+    { src: "/Gel-X/gelX1.png", alt: "Gel-X nail set" },
+    { src: "/Gel-X/gelX2.jpeg", alt: "Gel-X nail set" },
+  ],
+  "Gel Overlays": [
+    { src: "/Gel Overlay/gelOverlay1.png", alt: "Gel overlay nail set" },
+  ],
+};
+const collectionDetails = [
+  ["The Klassic", "Frenchies, polish-only designs, or 3D on one nail per hand."],
+  ["The Kustom", "3D on two to three nails per hand, polish designs, and charms."],
+  ["The Khrome", "3D on four to five nails per hand, polish designs, and charms."],
 ];
 const existingLengthOptions: CatalogOption[] = [
   { id: -1, name: "Keep my nail length", displayOrder: 0 },
@@ -37,6 +49,8 @@ export default function ServiceSelector() {
   const [selectedShape, setSelectedShape] = useState<CatalogOption | null>(null);
   const [showCart, setShowCart] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
   const revealTimer = useRef<number | null>(null);
 
   useEffect(() => {
@@ -91,10 +105,13 @@ export default function ServiceSelector() {
     setSelectedSize(null);
     setSelectedShape(null);
     setShowCart(false);
+    setCheckoutError(null);
+    setIsCheckingOut(false);
   };
 
   const chooseCategory = (category: Category) => {
     setShowCart(false);
+    setCheckoutError(null);
     setSelectedCategory(category);
     setSelectedService(null);
     setSelectedSize(null);
@@ -103,6 +120,7 @@ export default function ServiceSelector() {
 
   const chooseService = (service: Service) => {
     setShowCart(false);
+    setCheckoutError(null);
     setSelectedService(service);
     setSelectedSize(null);
     setSelectedShape(null);
@@ -127,6 +145,7 @@ export default function ServiceSelector() {
 
   const goBack = () => {
     setShowCart(false);
+    setCheckoutError(null);
     if (selectionComplete) {
       if (needsShape) setSelectedShape(null);
       else if (needsSize) setSelectedSize(null);
@@ -145,6 +164,40 @@ export default function ServiceSelector() {
     setSelectedCategory(null);
   };
 
+  const beginCheckout = async () => {
+    if (!selectedCategory || !selectedService || isCheckingOut) return;
+
+    setCheckoutError(null);
+    setIsCheckingOut(true);
+
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          categoryId: selectedCategory.id,
+          serviceId: selectedService.id,
+          sizeId: selectedSize?.id ?? null,
+          shapeId: selectedShape?.id ?? null,
+        }),
+      });
+      const checkout = await response.json() as CheckoutResponse;
+
+      if (!response.ok) {
+        throw new Error(checkout.message ?? "Unable to start checkout.");
+      }
+      if (!checkout.url) {
+        throw new Error("Checkout did not return a payment link.");
+      }
+
+      window.location.assign(checkout.url);
+    } catch (checkoutRequestError) {
+      console.error("Failed to start checkout:", checkoutRequestError);
+      setCheckoutError(checkoutRequestError instanceof Error ? checkoutRequestError.message : "Unable to start checkout.");
+      setIsCheckingOut(false);
+    }
+  };
+
   return <section className={`${styles.experience} ${expanded ? styles.expanded : ""}`} aria-label="The essentials">
     <button className={styles.close} type="button" onClick={close} aria-label="Close essentials">Close <span>×</span></button>
     <div className={styles.title}>
@@ -157,12 +210,23 @@ export default function ServiceSelector() {
 
     {!expanded && <>
       <div className={styles.menuHighlights}>{menuHighlights.map(([title, description]) => {
-        const image = title === "Gel-X" ? gelX1 : title === "Gel Overlays" ? gelOverlay1 : null;
+        const images = galleryImagesByTitle[title];
         return <article className={styles.menuItem} key={title}>
-          <div className={styles.menuCopy}><h3>{title}</h3><p>{description}</p></div>
+          <div className={styles.menuCopy}>
+            <h3>{title}</h3>
+            <p>{description}</p>
+            {title === "Custom Sizes" && <div className={styles.collectionDetails}>
+              <span>Set styles</span>
+              <dl>
+                {collectionDetails.map(([collectionTitle, collectionDescription]) => <div key={collectionTitle}>
+                  <dt>{collectionTitle}</dt>
+                  <dd>{collectionDescription}</dd>
+                </div>)}
+              </dl>
+            </div>}
+          </div>
           <div className={styles.menuVisual}>
-            {image && <Image className={styles.menuPhoto} src={image} alt={`${title} nail set`} sizes="(max-width: 700px) 42vw, 18vw" quality={100}/>}
-            {Array.from({ length: image ? 2 : 3 }, (_, index) => <i className={styles.menuPlaceholder} key={index} aria-hidden="true" />)}
+            {images ? <GalleryCarousel id={title === "Gel-X" ? "gallery" : undefined} images={images}/> : <i className={styles.menuPlaceholder} aria-hidden="true"/>}
           </div>
         </article>;
       })}</div>
@@ -211,8 +275,12 @@ export default function ServiceSelector() {
       </ol>
       {showCart && <div className={styles.cartActions}>
         <p>Selection complete</p>
-        <button type="button" onClick={goBack}>Edit selection</button>
+        <div className={styles.checkoutActions}>
+          <button type="button" onClick={goBack} disabled={isCheckingOut}>Edit selection</button>
+          <button type="button" onClick={beginCheckout} disabled={isCheckingOut}>{isCheckingOut ? "Redirecting…" : "Continue to secure checkout"}</button>
+        </div>
       </div>}
+      {checkoutError && <p className={styles.checkoutError} role="alert">{checkoutError}</p>}
     </aside>}
     {expanded && <p className={styles.helper}>{choosingSize ? usesExistingLength ? "Keep your current length or shorten it." : "Select a nail length." : choosingShape ? "Select a nail shape." : selectionComplete ? "Your service is selected." : selectedCategory ? "Choose a service to continue." : "Choose a service category to see its options."}</p>}
   </section>;
