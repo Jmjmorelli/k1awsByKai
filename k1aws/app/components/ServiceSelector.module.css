@@ -405,6 +405,12 @@
 .selectionTrail > p {
   margin: 0 0 1.1rem;
 }
+.selectionHeading > p {
+  font: 600 0.6rem Arial, sans-serif;
+  letter-spacing: 0.13em;
+  margin: 0 0 1.1rem;
+  text-transform: uppercase;
+}
 .selectionTrail ol {
   list-style: none;
   margin: 0;
@@ -415,6 +421,17 @@
   display: grid;
   gap: 0.3rem;
   margin: 0 0 1rem;
+}
+.selectionTrail li button {
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: grid;
+  gap: 0.3rem;
+  padding: 0;
+  text-align: left;
+  width: 100%;
 }
 .selectionTrail span {
   opacity: 0.48;
@@ -466,16 +483,16 @@
 
 .selectionComplete {
   animation: cart-enter 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
-  background: #ececea;
-  box-shadow: 0 1.25rem 3rem rgb(21 21 21 / 0.14);
+  background: #f7f5f2;
+  box-shadow: 0 1.25rem 3rem rgb(21 21 21 / 0.2);
   color: #151515;
   left: 50%;
   max-height: calc(100svh - 3rem);
   overflow-y: auto;
-  padding: clamp(1.5rem, 4vw, 3rem);
+  padding: clamp(2rem, 5vw, 4rem);
   top: 50%;
   transform: translate(-50%, -50%);
-  width: min(30rem, calc(100% - 2.5rem));
+  width: min(38rem, calc(100% - 2.5rem));
   z-index: 2;
 }
 
@@ -485,14 +502,35 @@
 
 .selectionComplete ol {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  grid-template-columns: 1fr;
 }
 
 .selectionComplete li {
   border-top: 1px solid rgb(21 21 21 / 0.22);
   margin: 0;
-  padding-top: 0.7rem;
+  padding: 0;
+}
+
+.selectionComplete li button {
+  align-items: center;
+  gap: 1rem;
+  grid-template-columns: minmax(5rem, 0.8fr) 1.2fr;
+  padding: 1rem 0;
+  transition: opacity 0.2s ease;
+}
+
+.selectionComplete li button:hover,
+.selectionComplete li button:focus-visible {
+  opacity: 0.58;
+  outline: none;
+}
+
+.selectionComplete li strong {
+  text-decoration: underline;
+  text-decoration-color: rgb(21 21 21 / 0.42);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.24em;
 }
 
 .selectionComplete span {
@@ -500,23 +538,80 @@
 }
 
 .selectionComplete strong {
-  font-size: clamp(1.1rem, 2vw, 1.45rem);
+  font-family: var(--display-font);
+  font-weight: 400;
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  text-align: right;
+}
+
+.selectionComplete .selectionHeading {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+}
+
+.summaryBack {
+  background: none;
+  border: 0;
+  color: #151515;
+  cursor: pointer;
+  font: 600 0.62rem Arial, sans-serif;
+  letter-spacing: 0.1em;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  text-transform: uppercase;
+}
+
+.summaryBack:hover,
+.summaryBack:focus-visible {
+  opacity: 0.55;
+  outline: none;
+}
+
+.selectionComplete .selectionHeading > p {
+  font: 400 clamp(1.8rem, 3vw, 2.5rem)/0.9 var(--display-font);
+  letter-spacing: -0.03em;
+  margin: 0;
+  text-transform: none;
+}
+
+.itemCount {
+  background: #151515;
+  color: #f7f5f2;
+  font: 600 0.58rem Arial, sans-serif;
+  letter-spacing: 0.08em;
+  opacity: 1;
+  padding: 0.3rem 0.42rem;
+  text-transform: uppercase;
 }
 
 .cartActions {
-  align-items: center;
+  align-items: stretch;
   border-top: 1px solid rgb(21 21 21 / 0.22);
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  gap: 1.5rem;
   margin-top: 2rem;
-  padding-top: 1rem;
+  padding-top: 1.5rem;
 }
 
-.cartActions p {
+.selectionTotal {
+  align-items: end;
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+}
+
+.selectionTotal span {
   font: 600 0.63rem Arial, sans-serif;
   letter-spacing: 0.13em;
-  margin: 0;
+  opacity: 0.6;
   text-transform: uppercase;
+}
+
+.selectionTotal strong {
+  font: 400 1.7rem/1 var(--display-font);
+  letter-spacing: -0.04em;
 }
 
 .checkoutActions {
@@ -535,12 +630,7 @@
   letter-spacing: 0.1em;
   padding: 0.8rem 1rem;
   text-transform: uppercase;
-}
-
-.cartActions button:first-child {
-  background: transparent;
-  border: 1px solid rgb(21 21 21 / 0.42);
-  color: #151515;
+  width: 100%;
 }
 
 .cartActions button:disabled {
@@ -583,5 +673,18 @@
 @media (max-width: 700px) {
   .selectionComplete {
     top: 50%;
+  }
+  .selectionComplete li button {
+    grid-template-columns: 0.8fr 1.2fr;
+  }
+  .cartActions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .checkoutActions {
+    justify-content: stretch;
+  }
+  .cartActions button {
+    flex: 1;
   }
 }

@@ -134,6 +134,7 @@ export default function ServiceSelector() {
   const choosingSize = Boolean(selectedService && needsSize && !selectedSize);
   const choosingShape = Boolean(selectedService && needsShape && (!needsSize || selectedSize) && !selectedShape);
   const selectionComplete = Boolean(selectedService && !choosingSize && !choosingShape);
+  const selectionCount = [selectedCategory, selectedService, selectedSize, selectedShape].filter(Boolean).length;
   const menuStep = choosingSize ? "size" : choosingShape ? "shape" : selectionComplete ? "complete" : selectedCategory ? "service" : "category";
 
   useEffect(() => {
@@ -162,6 +163,31 @@ export default function ServiceSelector() {
       return;
     }
     setSelectedCategory(null);
+  };
+
+  const editSelection = (step: "category" | "service" | "size" | "shape") => {
+    setShowCart(false);
+    setCheckoutError(null);
+
+    if (step === "category") {
+      setSelectedCategory(null);
+      setSelectedService(null);
+      setSelectedSize(null);
+      setSelectedShape(null);
+      return;
+    }
+    if (step === "service") {
+      setSelectedService(null);
+      setSelectedSize(null);
+      setSelectedShape(null);
+      return;
+    }
+    if (step === "size") {
+      setSelectedSize(null);
+      setSelectedShape(null);
+      return;
+    }
+    setSelectedShape(null);
   };
 
   const beginCheckout = async () => {
@@ -266,17 +292,20 @@ export default function ServiceSelector() {
       </>}
     </div>}
     {expanded && selectedCategory && <aside className={`${styles.selectionTrail} ${showCart ? styles.selectionComplete : selectionComplete ? styles.selectionLeaving : ""}`} aria-label="Current selection">
-      <p>Your selection</p>
+      {showCart && <button className={styles.summaryBack} type="button" onClick={goBack}>← Back</button>}
+      <div className={styles.selectionHeading}>
+        <p>{showCart ? "Summary" : "Your selection"}</p>
+        {showCart && <span className={styles.itemCount}>{selectionCount} {selectionCount === 1 ? "item" : "items"}</span>}
+      </div>
       <ol>
-        <li><span>Category</span><strong>{selectedCategory.name}</strong></li>
-        {selectedService && <li><span>Service</span><strong>{selectedService.name}</strong></li>}
-        {selectedSize && <li><span>Length</span><strong>{selectedSize.name}</strong></li>}
-        {selectedShape && <li><span>Shape</span><strong>{selectedShape.name}</strong></li>}
+        <li><button type="button" onClick={() => editSelection("category")}><span>Category</span><strong>{selectedCategory.name}</strong></button></li>
+        {selectedService && <li><button type="button" onClick={() => editSelection("service")}><span>Service</span><strong>{selectedService.name}</strong></button></li>}
+        {selectedSize && <li><button type="button" onClick={() => editSelection("size")}><span>Length</span><strong>{selectedSize.name}</strong></button></li>}
+        {selectedShape && <li><button type="button" onClick={() => editSelection("shape")}><span>Shape</span><strong>{selectedShape.name}</strong></button></li>}
       </ol>
       {showCart && <div className={styles.cartActions}>
-        <p>Selection complete</p>
+        <p className={styles.selectionTotal}><span>Starting at</span><strong>${selectedService?.basePrice}</strong></p>
         <div className={styles.checkoutActions}>
-          <button type="button" onClick={goBack} disabled={isCheckingOut}>Edit selection</button>
           <button type="button" onClick={beginCheckout} disabled={isCheckingOut}>{isCheckingOut ? "Redirecting…" : "Continue to secure checkout"}</button>
         </div>
       </div>}
