@@ -33,6 +33,15 @@ const existingLengthOptions: CatalogOption[] = [
   { id: -1, name: "Keep my nail length", displayOrder: 0 },
   { id: -2, name: "Shorten my nail length", displayOrder: 1 },
 ];
+const tierLabels: Record<string, string> = {
+  "Tier 0": "Plain / No Design",
+  "Tier 1": "Klassic",
+  "Tier 2": "Karma",
+  "Tier 3": "Kustom",
+  "Tier 4": "Khrome",
+};
+
+const getTierLabel = (tier: Tier) => tierLabels[tier.name] ?? tier.name;
 
 export default function ServiceSelector() {
   const [catalog, setCatalog] = useState<ServiceCatalog | null>(null);
@@ -363,7 +372,7 @@ export default function ServiceSelector() {
           {choosingTier && <>
             <button className={styles.back} type="button" onClick={goBack}>Back to shape</button>
             {[...(options?.tiers ?? [])].sort((a, b) => a.displayOrder - b.displayOrder).map((tier) => <button className={styles.service} key={tier.id} type="button" onClick={() => chooseTier(tier)}>
-              <strong>{tier.name}</strong><small>{tier.description ?? "Choose this design tier."}</small><b className={styles.price}>+${tier.additionalPrice}</b>
+              <strong>{getTierLabel(tier)}</strong><small>{tier.description ?? "Choose this design tier."}</small><b className={styles.price}>+${tier.additionalPrice}</b>
             </button>)}
           </>}
           {selectionComplete && <div className={styles.selectionSummary} aria-hidden="true" />}
@@ -381,7 +390,7 @@ export default function ServiceSelector() {
         {selectedService && <li><button type="button" onClick={() => editSelection("service")}><span>Service</span><strong>{selectedService.name}</strong></button></li>}
         {selectedSize && <li><button type="button" onClick={() => editSelection("size")}><span>Length</span><strong>{selectedSize.name}</strong></button></li>}
         {selectedShape && <li><button type="button" onClick={() => editSelection("shape")}><span>Shape</span><strong>{selectedShape.name}</strong></button></li>}
-        {selectedTier && <li><button type="button" onClick={() => editSelection("tier")}><span>Tier</span><strong>{selectedTier.name}</strong></button></li>}
+        {selectedTier && <li><button type="button" onClick={() => editSelection("tier")}><span>Tier</span><strong>{getTierLabel(selectedTier)}</strong></button></li>}
       </ol>
       {showCart && <div className={styles.cartActions}>
         <div className={styles.selectionMeta}>

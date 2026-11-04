@@ -25,7 +25,7 @@ const collections: { title: string; description: string; images?: GalleryImage[]
     {
         title: "THE KHROME",
         description: "3D on 2-4 nails per hand, polish designs, chrome, or charms",
-        tierName: "Tier 3",
+        tierName: "Tier 4",
         images: [
             { src: "/Gel-X/gelX2.jpeg", alt: "KHROME nail set" },
         ],
@@ -33,7 +33,7 @@ const collections: { title: string; description: string; images?: GalleryImage[]
     {
         title: "THE KUSTOM",
         description: "100% customized, different designs on every finger, 3D, chrome, and charms",
-        tierName: "Tier 4",
+        tierName: "Tier 3",
 
     },
 ];
