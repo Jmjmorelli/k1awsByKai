@@ -1,8 +1,8 @@
-const checkoutUrl = process.env.CHECKOUT_URL;
+const checkoutUrl = process.env.BOOKING_CHECKOUT_URL;
 
 export async function POST(request: Request) {
   if (!checkoutUrl) {
-    return Response.json({ message: "Checkout is not configured." }, { status: 500 });
+    return Response.json({ message: "Booking checkout is not configured." }, { status: 500 });
   }
 
   try {

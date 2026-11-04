@@ -10,8 +10,9 @@ type CatalogOption = { id: number; name: string; displayOrder: number };
 type Tier = { id: number; name: string; additionalPrice: number; additionalDurationMinutes: number; description: string | null; displayOrder: number };
 type ServiceCatalog = { categories: Category[] };
 type ServiceOptions = { sizes: CatalogOption[]; shapes: CatalogOption[]; tiers: Tier[] };
-type CheckoutResponse = { url?: string; message?: string };
-type ReferencePhoto = { name: string; dataUrl: string };
+type CheckoutResponse = { bookingId?: number; checkoutUrl?: string; message?: string };
+type ReferencePhoto = { name: string; base64: string; contentType: string };
+type ClientDetails = { firstName: string; lastName: string; email: string; phoneNumber: string };
 
 const catalogUrl = "/api/service-catalog";
 const optionsUrl = "/api/service-options";
@@ -57,6 +58,9 @@ export default function ServiceSelector() {
   const [requests, setRequests] = useState("");
   const [referralName, setReferralName] = useState("");
   const [referencePhoto, setReferencePhoto] = useState<ReferencePhoto | null>(null);
+  const [referencePhotoError, setReferencePhotoError] = useState<string | null>(null);
+  const [startsAt, setStartsAt] = useState("");
+  const [client, setClient] = useState<ClientDetails>({ firstName: "", lastName: "", email: "", phoneNumber: "" });
   const [showCart, setShowCart] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
@@ -157,6 +161,9 @@ export default function ServiceSelector() {
     setRequests("");
     setReferralName("");
     setReferencePhoto(null);
+    setReferencePhotoError(null);
+    setStartsAt("");
+    setClient({ firstName: "", lastName: "", email: "", phoneNumber: "" });
     setShowCart(false);
     setCheckoutError(null);
     setIsCheckingOut(false);
@@ -267,18 +274,41 @@ export default function ServiceSelector() {
     const file = event.target.files?.[0];
     if (!file) {
       setReferencePhoto(null);
+      setReferencePhotoError(null);
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setReferencePhoto(null);
+      setReferencePhotoError("Reference photos must be 5 MB or smaller.");
       return;
     }
 
     const reader = new FileReader();
-    reader.onload = () => setReferencePhoto({ name: file.name, dataUrl: String(reader.result) });
+    reader.onload = () => {
+      const [, base64] = String(reader.result).split(",", 2);
+      setReferencePhoto({ name: file.name, base64, contentType: file.type || "application/octet-stream" });
+      setReferencePhotoError(null);
+    };
     reader.readAsDataURL(file);
   };
 
   const formatDuration = (minutes: number) => minutes < 60 ? `${minutes} min` : `${Math.floor(minutes / 60)}h${minutes % 60 ? ` ${minutes % 60}m` : ""}`;
+  const toOffsetIsoString = (dateTime: string) => {
+    const date = new Date(dateTime);
+    const offsetMinutes = -date.getTimezoneOffset();
+    const sign = offsetMinutes >= 0 ? "+" : "-";
+    const pad = (value: number) => String(Math.abs(value)).padStart(2, "0");
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}:00${sign}${pad(Math.trunc(offsetMinutes / 60))}:${pad(offsetMinutes % 60)}`;
+  };
 
   const beginCheckout = async () => {
     if (!selectedCategory || !selectedService || isCheckingOut) return;
+
+    if (!startsAt || !client.firstName.trim() || !client.lastName.trim() || !client.email.trim() || !client.phoneNumber.trim()) {
+      setCheckoutError("Please provide your appointment time and contact details.");
+      return;
+    }
 
     setCheckoutError(null);
     setIsCheckingOut(true);
@@ -288,14 +318,22 @@ export default function ServiceSelector() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          startsAt: toOffsetIsoString(startsAt),
+          client: {
+            firstName: client.firstName.trim(),
+            lastName: client.lastName.trim(),
+            email: client.email.trim(),
+            phoneNumber: client.phoneNumber.trim(),
+          },
           categoryId: selectedCategory.id,
           serviceId: selectedService.id,
           sizeId: selectedSize?.id ?? null,
           shapeId: selectedShape?.id ?? null,
           tierId: selectedTier?.id ?? null,
+          removalId: null,
           requests: requests.trim() || null,
           referralName: referralName.trim() || null,
-          referencePhoto,
+          referencePhoto: referencePhoto ? { url: null, base64: referencePhoto.base64, contentType: referencePhoto.contentType } : null,
         }),
       });
       const checkout = await response.json() as CheckoutResponse;
@@ -303,11 +341,11 @@ export default function ServiceSelector() {
       if (!response.ok) {
         throw new Error(checkout.message ?? "Unable to start checkout.");
       }
-      if (!checkout.url) {
+      if (!checkout.checkoutUrl) {
         throw new Error("Checkout did not return a payment link.");
       }
 
-      window.location.assign(checkout.url);
+      window.location.assign(checkout.checkoutUrl);
     } catch (checkoutRequestError) {
       console.error("Failed to start checkout:", checkoutRequestError);
       setCheckoutError(checkoutRequestError instanceof Error ? checkoutRequestError.message : "Unable to start checkout.");
@@ -398,6 +436,30 @@ export default function ServiceSelector() {
           <p className={styles.selectionDuration}><span>Estimated duration</span><strong>{formatDuration(estimatedDurationMinutes)}</strong></p>
         </div>
         <label className={styles.requestField}>
+          <span>Appointment time</span>
+          <input type="datetime-local" value={startsAt} onChange={(event) => setStartsAt(event.target.value)} required/>
+        </label>
+        <div className={styles.clientFields}>
+          <label className={styles.requestField}>
+            <span>First name</span>
+            <input type="text" value={client.firstName} onChange={(event) => setClient((current) => ({ ...current, firstName: event.target.value }))} autoComplete="given-name" required/>
+          </label>
+          <label className={styles.requestField}>
+            <span>Last name</span>
+            <input type="text" value={client.lastName} onChange={(event) => setClient((current) => ({ ...current, lastName: event.target.value }))} autoComplete="family-name" required/>
+          </label>
+        </div>
+        <div className={styles.clientFields}>
+          <label className={styles.requestField}>
+            <span>Email</span>
+            <input type="email" value={client.email} onChange={(event) => setClient((current) => ({ ...current, email: event.target.value }))} autoComplete="email" required/>
+          </label>
+          <label className={styles.requestField}>
+            <span>Phone number</span>
+            <input type="tel" value={client.phoneNumber} onChange={(event) => setClient((current) => ({ ...current, phoneNumber: event.target.value }))} autoComplete="tel" required/>
+          </label>
+        </div>
+        <label className={styles.requestField}>
           <span>Requests or comments</span>
           <textarea value={requests} onChange={(event) => setRequests(event.target.value)} placeholder="Add any notes for your appointment" rows={3}/>
         </label>
@@ -410,6 +472,7 @@ export default function ServiceSelector() {
           <input type="file" accept="image/*" onChange={handleReferencePhoto}/>
           <b>{referencePhoto ? referencePhoto.name : "Add photo"}</b>
         </label>
+        {referencePhotoError && <p className={styles.checkoutError} role="alert">{referencePhotoError}</p>}
         <div className={styles.checkoutActions}>
           <button type="button" onClick={beginCheckout} disabled={isCheckingOut}>{isCheckingOut ? "Redirecting…" : "Continue to secure checkout"}</button>
         </div>

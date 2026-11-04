@@ -22,21 +22,33 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 ## Checkout API
 
-Set `CHECKOUT_URL` to the backend endpoint that creates a Stripe Checkout Session. The frontend sends:
+Set `BOOKING_CHECKOUT_URL` to the public backend endpoint that creates a booking and a Stripe Checkout Session. The frontend sends:
 
 ```json
 {
+  "startsAt": "2026-11-10T14:00:00-05:00",
+  "client": {
+    "firstName": "Jane",
+    "lastName": "Doe",
+    "email": "jane@example.com",
+    "phoneNumber": "555-555-5555"
+  },
   "categoryId": 1,
   "serviceId": 2,
   "sizeId": 3,
-  "shapeId": 4
+  "shapeId": 4,
+  "tierId": 1,
+  "removalId": null,
+  "requests": null,
+  "referralName": null,
+  "referencePhoto": null
 }
 ```
 
-`sizeId` and `shapeId` are `null` when they were not selected. The backend must validate this payload and return JSON with a Stripe-hosted Checkout URL:
+Optional selection IDs are `null` when not selected. The backend returns the booking ID and Stripe-hosted Checkout URL:
 
 ```json
-{ "url": "https://checkout.stripe.com/..." }
+{ "bookingId": 123, "checkoutUrl": "https://checkout.stripe.com/..." }
 ```
 
 ## Learn More
