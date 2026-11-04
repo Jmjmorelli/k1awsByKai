@@ -46,6 +46,7 @@ export default function ServiceSelector() {
   const [selectedTier, setSelectedTier] = useState<Tier | null>(null);
   const [pendingTierName, setPendingTierName] = useState<string | null>(null);
   const [requests, setRequests] = useState("");
+  const [referralName, setReferralName] = useState("");
   const [referencePhoto, setReferencePhoto] = useState<ReferencePhoto | null>(null);
   const [showCart, setShowCart] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -145,6 +146,7 @@ export default function ServiceSelector() {
     setSelectedShape(null);
     setSelectedTier(null);
     setRequests("");
+    setReferralName("");
     setReferencePhoto(null);
     setShowCart(false);
     setCheckoutError(null);
@@ -283,6 +285,7 @@ export default function ServiceSelector() {
           shapeId: selectedShape?.id ?? null,
           tierId: selectedTier?.id ?? null,
           requests: requests.trim() || null,
+          referralName: referralName.trim() || null,
           referencePhoto,
         }),
       });
@@ -388,6 +391,10 @@ export default function ServiceSelector() {
         <label className={styles.requestField}>
           <span>Requests or comments</span>
           <textarea value={requests} onChange={(event) => setRequests(event.target.value)} placeholder="Add any notes for your appointment" rows={3}/>
+        </label>
+        <label className={styles.requestField}>
+          <span>Referred by</span>
+          <input type="text" value={referralName} onChange={(event) => setReferralName(event.target.value)} placeholder="Name of the person who referred you"/>
         </label>
         <label className={styles.referencePhoto}>
           <span>Reference photo</span>
