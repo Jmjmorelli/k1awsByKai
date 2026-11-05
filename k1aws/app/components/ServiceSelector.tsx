@@ -19,7 +19,7 @@ const optionsUrl = "/api/service-options";
 const menuHighlights = [
   ["Gel-X", "Lightweight extensions tailored to your preferred length and shape."],
   ["Gel Overlays", "Structured support over your natural nails for a polished, lasting finish."],
-  ["Detailed Designs", "Frenchies, 3D details, charms, and art that make the set yours."],
+  // ["Detailed Designs", "Frenchies, 3D details, charms, and art that make the set yours."],
 ];
 const galleryImagesByTitle: Record<string, GalleryImage[]> = {
   "Gel-X": [
