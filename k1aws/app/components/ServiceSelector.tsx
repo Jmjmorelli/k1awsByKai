@@ -25,6 +25,7 @@ const galleryImagesByTitle: Record<string, GalleryImage[]> = {
   "Gel-X": [
     { src: "/Gel-X/gelX1.png", alt: "Gel-X nail set" },
     { src: "/Gel-X/gelX2.jpeg", alt: "Gel-X nail set" },
+    { src: "/Gel-X/gelX3.png", alt: "Gel-X nail set" },
   ],
   "Gel Overlays": [
     { src: "/Gel Overlay/gelOverlay1.png", alt: "Gel overlay nail set" },
