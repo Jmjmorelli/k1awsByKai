@@ -52,7 +52,12 @@ export default function Home() {
         </section>
 
         <section className={styles.about} id="about">
-            <div className={styles.aboutCopy}><span>"Don't pick a boring design"</span></div>
+            {/*<div className={styles.aboutCopy}><span>"Don't pick a boring design"</span></div>*/}
+            <div className={styles.aboutCopy}><span>                        Welcome to K1aws! I’m Kailen and I’m a student at University of Central Florida and I’ve been
+                        doing nails for about 6 years.
+                        I love creating cute, quality sets while keeping my prices affordable
+                        :)
+</span></div>
             <div className={styles.aboutImage}><Image src={kailenPfp} alt="Kailen, founder of K1aws by Kai"
                                                        sizes="(max-width: 100px) 50vw, 50vw" quality={100}/></div>
         </section>

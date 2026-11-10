@@ -5,20 +5,20 @@
 @custom-variant dark (&:is(.dark *));
 @plugin "daisyui";
 
-@font-face {
-    font-family: blostaFont;
-    src: url("./fonts/Blosta-Regular.otf");
-}
+/*@font-face {*/
+/*    font-family: blostaFont;*/
+/*    src: url("./fonts/Blosta-Regular.otf");*/
+/*}*/
 
-@font-face {
-    font-family: playfairFont;
-    src: url("./fonts/PlayfairDisplay-VariableFont_wght.ttf");
-}
+/*@font-face {*/
+/*    font-family: playfairFont;*/
+/*    src: url("./fonts/PlayfairDisplay-VariableFont_wght.ttf");*/
+/*}*/
 
-@font-face {
-    font-family: garamondFont;
-    src: url("./fonts/CormorantGaramond-VariableFont_wght.ttf");
-}
+/*@font-face {*/
+/*    font-family: garamondFont;*/
+/*    src: url("./fonts/CormorantGaramond-VariableFont_wght.ttf");*/
+/*}*/
 
 /* :root {
   --background: linear-gradient(to bottom, #6e0540 5%,  #830e50 29% , #a3496f, #c27992, #dea8b7, #f9d9e0);
