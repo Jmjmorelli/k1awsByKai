@@ -46,7 +46,7 @@ export default function FloatingNav() {
                     now</a>
                 </nav>
                 <div className={styles.menuFooter}><span>ORLANDO, FL</span><a
-                    href="https://www.instagram.com/kailenks/"><span>INSTAGRAM</span></a><span>© 2026 K1AWS</span></div>
+                    href="https://www.instagram.com/k1awsby.kai/"><span>INSTAGRAM</span></a><span>© 2026 K1AWS</span></div>
                 <strong aria-hidden="true">K1AWS</strong>
             </aside>
         </>

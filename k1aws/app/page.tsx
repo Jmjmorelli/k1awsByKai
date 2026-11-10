@@ -1,7 +1,7 @@
 import Image from "next/image";
 import CollectionExploreButton from "./components/CollectionExploreButton";
 import FloatingNav from "./components/FloatingNav";
-import GalleryCarousel, { type GalleryImage } from "./components/GalleryCarousel";
+import GalleryCarousel, {type GalleryImage} from "./components/GalleryCarousel";
 import ParallaxText from "./components/ParallaxText";
 import ServiceSelector from "./components/ServiceSelector";
 import styles from "./page.module.css";
@@ -19,7 +19,7 @@ const collections: { title: string; description: string; images?: GalleryImage[]
         description: "3D on one finger with simple designs",
         tierName: "Tier 2",
         images: [
-            { src: "/Gel-X/gelX1.png", alt: "Karma nail set" },
+            {src: "/Gel-X/gelX1.png", alt: "Karma nail set"},
         ],
     },
     {
@@ -27,7 +27,7 @@ const collections: { title: string; description: string; images?: GalleryImage[]
         description: "3D on 2-4 nails per hand, polish designs, chrome, or charms",
         tierName: "Tier 4",
         images: [
-            { src: "/Gel-X/gelX2.jpeg", alt: "KHROME nail set" },
+            {src: "/Gel-X/gelX2.jpeg", alt: "KHROME nail set"},
         ],
     },
     {
@@ -52,23 +52,45 @@ export default function Home() {
         </section>
 
         <section className={styles.about} id="about">
-            {/*<div className={styles.aboutCopy}><span>"Don't pick a boring design"</span></div>*/}
-            <div className={styles.aboutCopy}><span>                        Welcome to K1aws! I’m Kailen and I’m a student at University of Central Florida and I’ve been
-                        doing nails for about 6 years.
-                        I love creating cute, quality sets while keeping my prices affordable
-                        :)
-</span></div>
+
             <div className={styles.aboutImage}><Image src={kailenPfp} alt="Kailen, founder of K1aws by Kai"
-                                                       sizes="(max-width: 100px) 50vw, 50vw" quality={100}/></div>
+                                                      sizes="(max-width: 100px) 50vw, 50vw" quality={100}/></div>
+            <div className={styles.aboutCopy}><span>
+
+
+
+                Hi, my name is Kailen. I have been doing nails for about 6 years.
+                    What started as a little hobby, quickly grew into a passion,
+                and now a service that I can provide for others.
+
+
+                At K1aws, we prioritize your nail health and goals.
+                We use Gel-X as a tool to grow out your natural nails,
+                with the goal of transitioning to Gel-Overlay over time.
+                I love curating custom nail sets, so all designs are welcome, we actually insist on it! (it's just me actually there's no we...lol)
+
+
+
+
+
+                {/*Gel-X can also be a great way to grow out natural nails,*/}
+                {/*with the goal of transitioning to a gel overlay over time."*/}
+
+            </span>
+            </div>
+
+
         </section>
 
         <section className={styles.collections} id="collections">
             <div className={styles.titleRow}><ParallaxText className={styles.parallaxTitle}><h2>COLLECTIONS</h2>
             </ParallaxText><p><br/>.</p></div>
-            <div className={styles.collectionGrid}>{collections.map(({ title, description, images, tierName }) => <article
+            <div className={styles.collectionGrid}>{collections.map(({title, description, images, tierName}) => <article
                 className={styles.collection} key={title}>
-                <div className={styles.collectionVisual}>{images ? <GalleryCarousel images={images}/> : <i aria-hidden="true"/>}</div>
-                <h3>{title}</h3><p>{description}</p><CollectionExploreButton className={styles.collectionExplore} tierName={tierName}/></article>)}</div>
+                <div className={styles.collectionVisual}>{images ? <GalleryCarousel images={images}/> :
+                    <i aria-hidden="true"/>}</div>
+                <h3>{title}</h3><p>{description}</p><CollectionExploreButton className={styles.collectionExplore}
+                                                                             tierName={tierName}/></article>)}</div>
         </section>
 
         <section className={styles.finish} id="studio">
