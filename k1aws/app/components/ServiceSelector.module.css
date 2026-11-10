@@ -643,6 +643,45 @@
   outline: none;
 }
 
+.slotPicker {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.slotPicker > span {
+  font: 600 0.63rem Arial, sans-serif;
+  letter-spacing: 0.13em;
+  opacity: 0.6;
+  text-transform: uppercase;
+}
+
+.slotPicker p {
+  color: rgb(21 21 21 / 0.7);
+  font: 0.82rem/1.4 Arial, sans-serif;
+  margin: 0;
+}
+
+.slotList {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.slotList .slotButton {
+  background: #fff;
+  border: 1px solid rgb(21 21 21 / 0.22);
+  color: #151515;
+  font: 600 0.68rem Arial, sans-serif;
+  letter-spacing: 0.04em;
+  padding: 0.7rem 0.45rem;
+}
+
+.slotList .slotButton[aria-pressed="true"] {
+  background: #151515;
+  border-color: #151515;
+  color: #ececea;
+}
+
 .referencePhoto {
   align-items: center;
   border: 1px dashed rgb(21 21 21 / 0.35);

@@ -10,12 +10,14 @@ type CatalogOption = { id: number; name: string; displayOrder: number };
 type Tier = { id: number; name: string; additionalPrice: number; additionalDurationMinutes: number; description: string | null; displayOrder: number };
 type ServiceCatalog = { categories: Category[] };
 type ServiceOptions = { sizes: CatalogOption[]; shapes: CatalogOption[]; tiers: Tier[] };
+type AvailabilitySlot = { id: number; availabilityDate: string; startTime: string; endTime: string; isAvailable: boolean };
 type CheckoutResponse = { bookingId?: number; checkoutUrl?: string; message?: string };
 type ReferencePhoto = { name: string; base64: string; contentType: string };
 type ClientDetails = { firstName: string; lastName: string; email: string; phoneNumber: string };
 
 const catalogUrl = "/api/service-catalog";
 const optionsUrl = "/api/service-options";
+const availabilitySlotsUrl = "/api/availability-slots";
 const menuHighlights = [
   ["Gel-X", "Lightweight extensions tailored to your preferred length and shape."],
   ["Gel Overlays", "Structured support over your natural nails for a polished, lasting finish."],
@@ -44,6 +46,21 @@ const tierLabels: Record<string, string> = {
 };
 
 const getTierLabel = (tier: Tier) => tierLabels[tier.name] ?? tier.name;
+const nextCalendarDate = (date: string) => {
+  const value = new Date(`${date}T00:00:00Z`);
+  value.setUTCDate(value.getUTCDate() + 1);
+  return value.toISOString().slice(0, 10);
+};
+const formatSlotTime = (time: string) => {
+  const [hourText, minuteText] = time.split(":");
+  const hour = Number(hourText);
+  const minute = Number(minuteText);
+  return `${hour % 12 || 12}:${String(minute).padStart(2, "0")} ${hour >= 12 ? "PM" : "AM"}`;
+};
+const slotStartsAt = (slot: AvailabilitySlot | null) => {
+  if (!slot) return "";
+  return `${slot.availabilityDate}T${slot.startTime.length === 5 ? `${slot.startTime}:00` : slot.startTime}`;
+};
 
 export default function ServiceSelector() {
   const [catalog, setCatalog] = useState<ServiceCatalog | null>(null);
@@ -60,7 +77,11 @@ export default function ServiceSelector() {
   const [referralName, setReferralName] = useState("");
   const [referencePhoto, setReferencePhoto] = useState<ReferencePhoto | null>(null);
   const [referencePhotoError, setReferencePhotoError] = useState<string | null>(null);
-  const [startsAt, setStartsAt] = useState("");
+  const [appointmentDate, setAppointmentDate] = useState("");
+  const [availableSlots, setAvailableSlots] = useState<AvailabilitySlot[]>([]);
+  const [selectedSlot, setSelectedSlot] = useState<AvailabilitySlot | null>(null);
+  const [isLoadingSlots, setIsLoadingSlots] = useState(false);
+  const [slotError, setSlotError] = useState<string | null>(null);
   const [client, setClient] = useState<ClientDetails>({ firstName: "", lastName: "", email: "", phoneNumber: "" });
   const [showCart, setShowCart] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -99,6 +120,44 @@ export default function ServiceSelector() {
   useEffect(() => () => {
     if (revealTimer.current !== null) window.clearTimeout(revealTimer.current);
   }, []);
+
+  useEffect(() => {
+    if (!appointmentDate) {
+      setAvailableSlots([]);
+      setSelectedSlot(null);
+      setSlotError(null);
+      return;
+    }
+
+    const controller = new AbortController();
+    setIsLoadingSlots(true);
+    setSlotError(null);
+    setSelectedSlot(null);
+    const to = nextCalendarDate(appointmentDate);
+
+    async function loadSlots() {
+      try {
+        const response = await fetch(`${availabilitySlotsUrl}?from=${encodeURIComponent(appointmentDate)}&to=${encodeURIComponent(to)}&availableOnly=true`, {
+          signal: controller.signal,
+        });
+        const slots = await response.json() as AvailabilitySlot[] | { message?: string };
+        if (!response.ok || !Array.isArray(slots)) {
+          throw new Error(!Array.isArray(slots) ? slots.message : "Unable to load appointment times.");
+        }
+        setAvailableSlots(slots);
+      } catch (requestError) {
+        if (requestError instanceof DOMException && requestError.name === "AbortError") return;
+        console.error("Failed to load appointment slots:", requestError);
+        setAvailableSlots([]);
+        setSlotError(requestError instanceof Error ? requestError.message : "Unable to load appointment times.");
+      } finally {
+        if (!controller.signal.aborted) setIsLoadingSlots(false);
+      }
+    }
+
+    void loadSlots();
+    return () => controller.abort();
+  }, [appointmentDate]);
 
   const open = useCallback(() => {
     setExpanded(true);
@@ -163,7 +222,11 @@ export default function ServiceSelector() {
     setReferralName("");
     setReferencePhoto(null);
     setReferencePhotoError(null);
-    setStartsAt("");
+    setAppointmentDate("");
+    setAvailableSlots([]);
+    setSelectedSlot(null);
+    setIsLoadingSlots(false);
+    setSlotError(null);
     setClient({ firstName: "", lastName: "", email: "", phoneNumber: "" });
     setShowCart(false);
     setCheckoutError(null);
@@ -295,19 +358,11 @@ export default function ServiceSelector() {
   };
 
   const formatDuration = (minutes: number) => minutes < 60 ? `${minutes} min` : `${Math.floor(minutes / 60)}h${minutes % 60 ? ` ${minutes % 60}m` : ""}`;
-  const toOffsetIsoString = (dateTime: string) => {
-    const date = new Date(dateTime);
-    const offsetMinutes = -date.getTimezoneOffset();
-    const sign = offsetMinutes >= 0 ? "+" : "-";
-    const pad = (value: number) => String(Math.abs(value)).padStart(2, "0");
-    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}:00${sign}${pad(Math.trunc(offsetMinutes / 60))}:${pad(offsetMinutes % 60)}`;
-  };
-
   const beginCheckout = async () => {
     if (!selectedCategory || !selectedService || isCheckingOut) return;
 
-    if (!startsAt || !client.firstName.trim() || !client.lastName.trim() || !client.email.trim() || !client.phoneNumber.trim()) {
-      setCheckoutError("Please provide your appointment time and contact details.");
+    if (!selectedSlot || !client.firstName.trim() || !client.lastName.trim() || !client.email.trim() || !client.phoneNumber.trim()) {
+      setCheckoutError("Please select an available appointment time and provide your contact details.");
       return;
     }
 
@@ -319,7 +374,7 @@ export default function ServiceSelector() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          startsAt: toOffsetIsoString(startsAt),
+          startsAt: slotStartsAt(selectedSlot),
           client: {
             firstName: client.firstName.trim(),
             lastName: client.lastName.trim(),
@@ -437,9 +492,21 @@ export default function ServiceSelector() {
           <p className={styles.selectionDuration}><span>Estimated duration</span><strong>{formatDuration(estimatedDurationMinutes)}</strong></p>
         </div>
         <label className={styles.requestField}>
-          <span>Appointment time</span>
-          <input type="datetime-local" value={startsAt} onChange={(event) => setStartsAt(event.target.value)} required/>
+          <span>Appointment date</span>
+          <input type="date" value={appointmentDate} onChange={(event) => setAppointmentDate(event.target.value)} required/>
         </label>
+        {appointmentDate && <div className={styles.slotPicker}>
+          <span>Available times</span>
+          {isLoadingSlots && <p>Loading available times…</p>}
+          {slotError && <p className={styles.checkoutError} role="alert">{slotError}</p>}
+          {!isLoadingSlots && !slotError && availableSlots.length === 0 && <p>No appointment times are available on this date.</p>}
+          {!isLoadingSlots && availableSlots.length > 0 && <div className={styles.slotList}>
+            {availableSlots.map((slot) => <button className={styles.slotButton} key={slot.id} type="button"
+              aria-pressed={selectedSlot?.id === slot.id} onClick={() => { setSelectedSlot(slot); setCheckoutError(null); }}>
+              {formatSlotTime(slot.startTime)}
+            </button>)}
+          </div>}
+        </div>}
         <div className={styles.clientFields}>
           <label className={styles.requestField}>
             <span>First name</span>
